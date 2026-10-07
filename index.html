@@ -248,6 +248,8 @@ button.ghost:hover{color:var(--text);border-color:rgba(212,175,55,.4)}
   12%{opacity:1;transform:translate(-50%,-70%) scale(1.1)}
   100%{transform:translate(-50%,-190%) scale(.9);opacity:0}
 }
+.float-num.mid{color:#8fe3c0;text-shadow:0 0 14px rgba(87,217,163,.85),0 2px 4px rgba(0,0,0,.6)}
+.float-num.big{color:#fff3c8;text-shadow:0 0 18px rgba(240,217,140,.95),0 0 36px rgba(212,175,55,.6),0 2px 4px rgba(0,0,0,.6)}
 .spark{
   position:fixed;z-index:49;pointer-events:none;width:5px;height:5px;border-radius:50%;
   background:var(--gold-bright);box-shadow:0 0 8px rgba(240,217,140,.9);
@@ -361,6 +363,70 @@ body{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .set-btns{display:flex;gap:10px;margin-top:20px}
 .set-btns .ghost{flex:1;justify-content:center}
 
+/* ================= 大按钮（离线收功等） ================= */
+.big-btn{font-family:var(--serif);font-size:15px;letter-spacing:4px;padding:10px 26px;border-radius:12px;cursor:pointer;
+  background:linear-gradient(135deg,rgba(87,217,163,.22),rgba(240,217,140,.14));color:#dff5ea;
+  border:1px solid rgba(87,217,163,.5);transition:.18s}
+.big-btn:hover{background:linear-gradient(135deg,rgba(87,217,163,.32),rgba(240,217,140,.22))}
+.big-btn:disabled{opacity:.35;cursor:not-allowed}
+
+/* 法宝升阶按钮 */
+.u-tier-btn{margin-top:8px;align-self:center;font-family:var(--serif);font-size:12px;letter-spacing:2px;
+  padding:5px 16px;border-radius:9px;cursor:pointer;background:rgba(240,217,140,.1);
+  color:var(--gold-bright);border:1px solid rgba(240,217,140,.32);transition:.15s}
+.u-tier-btn:hover{background:rgba(240,217,140,.2)}
+.u-tier-btn:disabled{opacity:.35;cursor:not-allowed}
+.u-tier-tag{display:inline-block;font-size:11px;color:var(--jade);margin-left:6px;letter-spacing:1px}
+
+/* 道韵天赋 */
+.tal-box{margin-top:24px;padding-top:16px;border-top:1px solid rgba(212,175,55,.14)}
+.tal-head{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+.tal-head h3{margin:0;font-family:var(--calli);font-weight:400;font-size:22px;color:var(--gold-bright);letter-spacing:4px}
+.tal-head .tal-sub{font-size:12px;color:var(--text-dim);letter-spacing:2px}
+.tal-head .tal-num{margin-left:auto;font-size:13px;color:var(--jade);letter-spacing:1px;white-space:nowrap}
+.tal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.tal-card{padding:12px 13px;border-radius:12px;border:1px solid rgba(212,175,55,.12);background:rgba(255,255,255,.02);
+  display:flex;flex-direction:column;gap:6px;transition:.15s}
+.tal-card.owned{border-color:rgba(87,217,163,.3);background:rgba(87,217,163,.04)}
+.tal-name{font-size:14px;color:var(--text);letter-spacing:1px}
+.tal-lv{font-size:11px;color:var(--jade);margin-left:6px}
+.tal-desc{font-size:12px;color:var(--text-dim);line-height:1.5;flex:1}
+.tal-btn{align-self:flex-start;font-family:var(--serif);font-size:12px;letter-spacing:2px;padding:5px 14px;border-radius:8px;cursor:pointer;
+  background:rgba(240,217,140,.12);color:var(--gold-bright);border:1px solid rgba(240,217,140,.35);transition:.15s}
+.tal-btn:hover{background:rgba(240,217,140,.22)}
+.tal-btn:disabled{opacity:.35;cursor:not-allowed}
+.tal-max{font-size:12px;color:var(--jade);letter-spacing:2px}
+.tal-hint{margin-top:10px;font-size:12px;color:var(--text-dim);letter-spacing:1px}
+
+/* 成就领取按钮 */
+.a-claim{margin-top:8px;font-family:var(--serif);font-size:12px;letter-spacing:3px;padding:4px 18px;border-radius:999px;
+  cursor:pointer;background:linear-gradient(135deg,rgba(87,217,163,.25),rgba(240,217,140,.15));
+  color:#dff5ea;border:1px solid rgba(87,217,163,.5)}
+.a-claim:hover{filter:brightness(1.15)}
+.a-card.done .a-claim{display:inline-block}
+
+/* 离线收益模态 */
+.modal{position:fixed;inset:0;z-index:120;display:flex;align-items:center;justify-content:center;
+  background:rgba(3,7,5,.78);backdrop-filter:blur(4px)}
+.modal-card{width:min(400px,90%);background:rgba(12,22,17,.97);border:1px solid rgba(240,217,140,.3);
+  border-radius:18px;padding:26px 28px;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.6)}
+.modal-card h3{margin:0 0 6px;font-family:var(--calli);font-weight:400;font-size:30px;color:var(--gold-bright);letter-spacing:6px}
+.modal-card .modal-sub{color:var(--text-dim);font-size:13px;letter-spacing:2px;margin-bottom:16px}
+.modal-num{font-size:38px;font-weight:900;color:var(--jade);margin:8px 0 2px;text-shadow:0 0 22px rgba(87,217,163,.3)}
+.modal-rows{margin:14px 0 18px;display:flex;flex-direction:column;gap:6px;font-size:13.5px;color:var(--text-dim)}
+.modal-rows .s-row{padding:0 6px}
+
+/* 主菜单存档位 */
+.slot-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;margin-top:2px}
+.slot-card{padding:9px 6px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);
+  cursor:pointer;text-align:center;transition:.15s;font-family:inherit}
+.slot-card:hover{border-color:rgba(240,217,140,.5);background:rgba(240,217,140,.06)}
+.slot-card.active{border-color:rgba(87,217,163,.6);background:rgba(87,217,163,.1)}
+.slot-card .sl-name{font-size:12px;letter-spacing:2px;color:var(--text-dim)}
+.slot-card .sl-info{font-size:12px;color:var(--text);margin-top:4px;letter-spacing:1px}
+.slot-card .sl-realm{font-size:13px;color:var(--gold-bright);margin-top:3px}
+.slot-card.empty .sl-info,.slot-card.empty .sl-realm{color:rgba(230,240,235,.3)}
+
 </style>
 </head>
 <body>
@@ -376,8 +442,9 @@ body{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
     <button class="menu-btn primary" id="mStart">开始修炼</button>
     <button class="menu-btn primary" id="mContinue" style="display:none">继续修炼</button>
     <button class="menu-btn danger" id="mNew" style="display:none">重新开始</button>
+    <div class="slot-row" id="slotRow"></div>
     <button class="menu-btn" id="mSettings">设　置</button>
-    <div class="menu-foot">九重境界 · 三十成就 · 离线亦可闭关</div>
+    <div class="menu-foot">九重境界 · 招徒引劫 · 离线亦可闭关</div>
   </div>
 </div>
 
@@ -394,8 +461,12 @@ body{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
       <div class="vol-wrap"><input type="range" id="volRange" min="0" max="100" value="100"><b id="volNum">100%</b></div>
     </div>
     <div class="set-row">
-      <div class="lab">灵光特效<b>漂浮数字与金色火花</b></div>
+      <div class="lab">点击特效<b>漂浮数字 · 金色火花 · 连击显示</b></div>
       <div class="sw" id="swFx"></div>
+    </div>
+    <div class="set-row">
+      <div class="lab">仙音<b>五音琶韵，随灵气起伏而鸣</b></div>
+      <div class="sw" id="swBgm"></div>
     </div>
     <div class="set-row">
       <div class="lab">全屏显示<b>快捷键：F11 切换 · ESC 退出</b></div>
@@ -522,7 +593,7 @@ const GLOBAL_UPS=[
 ];
 const REALMS=['炼气期','筑基期','金丹期','元婴期','化神期','炼虚期','合体期','大乘期','渡劫期'];
 const realmName=lv=>lv<REALMS.length?REALMS[lv]:`真仙 · ${lv-REALMS.length+1}转`;
-const reqFor=lv=>1e7*Math.pow(40,lv);
+const reqFor=lv=>1e7*Math.pow(40,lv)*(1-0.04*(S.tal&&S.tal.houji||0)); // 厚积薄发：突破需求 -4%/级
 
 /* ================= 成就定义 ================= */
 const ACH=[
@@ -569,12 +640,13 @@ const ACH=[
 const achCount=()=>Object.keys(S.ach).length;
 
 /* ================= 状态 ================= */
-let S={qi:0,totalAll:0,totalRun:0,clicks:0,counts:{},ups:{},realm:0,playTime:0,last:Date.now(),ach:{},spirits:0,brkTotal:0};
+let S={qi:0,totalAll:0,totalRun:0,clicks:0,counts:{},ups:{},realm:0,playTime:0,last:Date.now(),ach:{},spirits:0,brkTotal:0,
+  upTier:{},achClaimed:{},daoyun:0,tal:{}};
 let buyMode=1, buff=null, nextSpirit=0;
 
 /* ================= 设置（独立于游戏存档，兵解不丢失） ================= */
 const SET_KEY='lingxu_settings_v1';
-let SET={sound:true,fx:true,vol:1};
+let SET={sound:true,fx:true,vol:1,bgm:true,slot:1};
 try{const s=JSON.parse(localStorage.getItem(SET_KEY));if(s&&typeof s==='object')SET={...SET,...s};}catch(e){}
 let soundOn=SET.sound!==false;
 let fxOn=SET.fx!==false;
@@ -584,11 +656,14 @@ const cnt=id=>S.counts[id]||0;
 const has=id=>!!S.ups[id];
 
 /* ================= 数值 ================= */
+const tierMul=id=>Math.pow(1.5,S.upTier[id]||0); // 法宝升阶：每阶 ×1.5
 function buildingMult(id){
   let m=1;
   TIERS.forEach((_,i)=>{ if(has(id+'_u'+i)) m*=2; });
-  if(has('g1'))m*=1.5; if(has('g2'))m*=2; if(has('g3'))m*=2.5;
+  m*=tierMul(id+'_u0')*tierMul(id+'_u1')*tierMul(id+'_u2')*tierMul(id+'_u3');
+  if(has('g1'))m*=1.5*tierMul('g1'); if(has('g2'))m*=2*tierMul('g2'); if(has('g3'))m*=2.5*tierMul('g3');
   m*=1+0.01*achCount();
+  m*=1+0.1*talLv('zhoutian');         // 周天运转：全部产出 +10%/级
   if(buff)m*=buff.mult;
   m*=Math.pow(2,S.realm);
   return m;
@@ -599,11 +674,70 @@ function qps(){
   return sum;
 }
 function clickPower(){
-  let base=1;
-  CLICK_UPS.forEach(u=>{ if(has(u.id)&&u.desc.includes('×2'))base*=2; if(has(u.id)&&u.desc.includes('×3'))base*=3; });
+  // 点击类法宝倍率（×2/×3 及升阶加成）
+  let mult=1;
+  CLICK_UPS.forEach(u=>{
+    if(has(u.id)){
+      const t=tierMul(u.id);
+      if(u.desc.includes('×2'))mult*=2*t;
+      if(u.desc.includes('×3'))mult*=3*t;
+    }
+  });
   let pct=0;
   if(has('c3'))pct+=0.01; if(has('c5'))pct+=0.02; if(has('c7'))pct+=0.05;
-  return base+qps()*pct;
+  // 吐纳平衡：一次点击 ≈ 1.5 秒挂机产出；法宝倍率作前期基础，后期靠按秒比例项，不碾压挂机
+  let p=mult+qps()*1.5*(1+pct);
+  p*=1+0.25*talLv('jiqu');            // 聚气如虹：点击收益 +25%/级
+  p+=qps()*0.005*talLv('qitun');      // 气吞山河：点击额外获得挂机产出 0.5%/级
+  return p;
+}
+const upTierCost=u=>Math.ceil(u.cost*8*Math.pow(3,S.upTier[u.id]||0));
+/* ================= 道韵天赋（突破得韵 · 跨世传承） ================= */
+const TALS=[
+  {id:'jiqu',    name:'聚气如虹', desc:'点击收益 +25%/级',            max:5},
+  {id:'qitun',   name:'气吞山河', desc:'点击额外获得挂机产出的 0.5%/级', max:5},
+  {id:'zhoutian',name:'万象归流', desc:'全部产出 +10%/级',            max:5},
+  {id:'lingchao',name:'灵潮亲和', desc:'仙缘灵气暴增 +25%/级',         max:5},
+  {id:'houji',   name:'厚积薄发', desc:'突破所需灵气 -4%/级',          max:5},
+  {id:'xinhuo',  name:'薪火相传', desc:'突破后保留 10%/级 今世灵气',    max:5},
+];
+const talLv=id=>S.tal[id]||0;
+function addTal(id){
+  const t=TALS.find(x=>x.id===id),lv=talLv(id);
+  if(lv>=t.max||S.daoyun<=lv)return;
+  S.daoyun--;S.tal[id]=lv+1;
+  sndUp();toast('天赋通玄',t.name+' 第 '+(lv+1)+' 层 · '+t.desc,true);
+  renderTal();
+}
+function renderTal(){
+  const grid=document.getElementById('talGrid');if(!grid)return;
+  const num=document.getElementById('talNum');
+  if(num)num.textContent='道韵 · '+S.daoyun;
+  const sig=S.daoyun+':'+TALS.map(t=>talLv(t.id)).join('');
+  if(grid.dataset.sig!==sig){
+    grid.dataset.sig=sig;
+    grid.innerHTML=TALS.map(t=>{
+      const lv=talLv(t.id),maxed=lv>=t.max;
+      return `<div class="tal-card${lv?' owned':''}">
+        <div class="tal-name">${t.name}<span class="tal-lv">${lv}/${t.max}</span></div>
+        <div class="tal-desc">${t.desc}</div>
+        ${maxed?'<div class="tal-max">已臻圆满</div>'
+          :`<button class="tal-btn" data-tal="${t.id}" ${S.daoyun>lv?'':'disabled'}>悟 · 1 韵</button>`}
+      </div>`;
+    }).join('');
+    grid.querySelectorAll('.tal-btn').forEach(b=>b.addEventListener('click',()=>addTal(b.dataset.tal)));
+  }else{
+    // 轻刷新：只更新按钮可用态，不重建 DOM，避免吞点击
+    grid.querySelectorAll('.tal-btn').forEach(b=>{b.disabled=S.daoyun<=talLv(b.dataset.tal);});
+  }
+}
+function tierUp(u){
+  if(!has(u.id))return;
+  const c=upTierCost(u);
+  if(S.qi<c)return;
+  S.qi-=c;S.upTier[u.id]=(S.upTier[u.id]||0)+1;
+  sndUp();toast('法宝升阶',u.name+' 升至 '+(S.upTier[u.id]+1)+' 阶，效果更上一层',true);
+  renderUps();refreshList();
 }
 function costOf(b,n){
   const owned=cnt(b.id);
@@ -646,6 +780,41 @@ const sndUp=()=>{beep(660,.1,'triangle',.06);beep(880,.1,'triangle',.06,.08);bee
 const sndBrk=()=>{[440,554,659,880,1108].forEach((f,i)=>beep(f,.5,'sine',.07,i*.12));};
 const sndSpirit=()=>{beep(1200,.3,'sine',.05);beep(1600,.4,'sine',.05,.1);};
 
+/* ================= 仙音（程序化 BGM） ================= */
+let bgmOn=SET.bgm!==false;
+function bgmNote(){
+  if(!bgmOn||!soundOn)return;
+  try{
+    AC=AC||new(window.AudioContext||window.webkitAudioContext)();
+    if(AC.state==='suspended'){AC.resume();return;}
+    // 五声音阶（宫商角徵羽）跨三个八度
+    const scale=[130.81,146.83,164.81,196,220,261.63,293.66,329.63,392,440,523.25,587.33];
+    const n=1+(Math.random()*2|0);
+    for(let i=0;i<n;i++){
+      const f=scale[Math.random()*scale.length|0];
+      const t=AC.currentTime+i*(0.35+Math.random()*0.5);
+      const o=AC.createOscillator(),g=AC.createGain();
+      o.type='sine';o.frequency.value=f;
+      const v=0.018*masterVol;
+      g.gain.setValueAtTime(.0001,t);
+      g.gain.linearRampToValueAtTime(v,t+.25);
+      g.gain.exponentialRampToValueAtTime(.0001,t+2.6);
+      o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+2.8);
+    }
+    // 偶发低鸣铺底
+    if(Math.random()<.3){
+      const t=AC.currentTime;
+      const o=AC.createOscillator(),g=AC.createGain();
+      o.type='sine';o.frequency.value=65.4;
+      g.gain.setValueAtTime(.0001,t);
+      g.gain.linearRampToValueAtTime(0.02*masterVol,t+1.2);
+      g.gain.exponentialRampToValueAtTime(.0001,t+5);
+      o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+5.2);
+    }
+  }catch(e){}
+}
+setInterval(()=>{ if(bgmOn&&soundOn&&Math.random()<.75)bgmNote(); },3200);
+
 /* ================= Toast ================= */
 function toast(title,body,jade){
   const box=document.getElementById('toasts');
@@ -657,18 +826,22 @@ function toast(title,body,jade){
 }
 
 /* ================= 点击特效 ================= */
-function fx(x,y,text){
+function fx(x,y,text,combo){
   if(!fxOn)return;
   const f=document.createElement('div');
-  f.className='float-num';f.textContent=text;
+  // 连击增强：5 连起显示倍数、字号渐大，10 连转玉色、20 连转鎏金
+  const tier=combo>=20?' big':(combo>=10?' mid':'');
+  f.className='float-num'+tier;
+  f.textContent=combo>=5?text+'　×'+combo:text;
   f.style.left=x+'px';f.style.top=y+'px';
-  f.style.fontSize=(16+Math.random()*8)+'px';
+  f.style.fontSize=(16+Math.random()*8+Math.min(combo||1,20))+'px';
   document.body.appendChild(f);
   setTimeout(()=>f.remove(),1200);
-  for(let i=0;i<5;i++){
+  const sparks=combo>=10?9:5;
+  for(let i=0;i<sparks;i++){
     const s=document.createElement('div');
     s.className='spark';
-    const a=Math.random()*Math.PI*2,d=30+Math.random()*55;
+    const a=Math.random()*Math.PI*2,d=30+Math.random()*55+(combo||1)*2;
     s.style.left=x+'px';s.style.top=y+'px';
     s.style.setProperty('--dx',Math.cos(a)*d+'px');
     s.style.setProperty('--dy',Math.sin(a)*d+'px');
@@ -678,12 +851,16 @@ function fx(x,y,text){
 }
 
 /* ================= 核心：点击 / 购买 ================= */
+let comboN=0,comboT=0; // 连击计数：0.9 秒内连续点击累积
 function doClick(ev){
   const p=clickPower();
   S.qi+=p;S.totalAll+=p;S.totalRun+=p;S.clicks++;
+  const now=Date.now();
+  comboN=now-comboT<900?comboN+1:1;
+  comboT=now;
   sndClick();
   const orb=document.getElementById('orb').getBoundingClientRect();
-  fx(ev?ev.clientX:orb.left+orb.width/2, ev?ev.clientY:orb.top+orb.height/2,'+'+fmt(p));
+  fx(ev?ev.clientX:orb.left+orb.width/2, ev?ev.clientY:orb.top+orb.height/2,'+'+fmt(p),comboN);
 }
 function buy(b){
   let n=buyMode==='max'?maxAffordable(b):buyMode;
@@ -710,9 +887,11 @@ function doBreak(){
   if(S.totalRun<req)return;
   S.realm++;
   S.brkTotal++;
-  S.qi=0;S.totalRun=0;S.counts={};S.ups={};buff=null;
+  S.daoyun+=2;
+  S.qi=Math.floor(S.qi*0.1*talLv('xinhuo')); // 薪火相传：突破后保留部分今世灵气
+  S.totalRun=0;S.counts={};S.ups={};S.upTier={};buff=null;
   sndBrk();
-  toast('突破成功！','你已踏入【'+realmName(S.realm)+'】，全灵气产出 ×'+Math.pow(2,S.realm),false);
+  toast('突破成功！','踏入【'+realmName(S.realm)+'】，全产出 ×'+Math.pow(2,S.realm)+'，悟得道韵 +2（兵解不灭）',false);
   renderBrk();refreshList();renderUps();updateStatic();
   save();
 }
@@ -777,10 +956,15 @@ function renderUps(){
       card.className='u-card';card.dataset.uid=u.id;
       card.innerHTML=`
         <span class="u-tag">${u.kind==='b'?'洞府':(CLICK_UPS.includes(u)?'吐纳':'气运')}</span>
-        <div class="u-name">${u.name}</div>
+        <div class="u-name">${u.name}${bought&&S.upTier[u.id]?`<span class="u-tier-tag">${S.upTier[u.id]+1}阶</span>`:''}</div>
         <div class="u-desc">${u.desc}</div>
-        <div class="u-cost"></div>`;
+        <div class="u-cost"></div>
+        ${bought?'<button class="u-tier-btn"></button>':''}`;
       if(!bought)card.addEventListener('click',()=>buyUp(u));
+      else{
+        const tb=card.querySelector('.u-tier-btn');
+        tb.addEventListener('click',e=>{e.stopPropagation();tierUp(u);});
+      }
       grid.appendChild(card);
     });
     if(!visible.length)grid.innerHTML='<div style="padding:40px;text-align:center;color:var(--text-dim);letter-spacing:2px;font-size:13px">尚未寻得法宝线索 · 先积攒一些灵气吧</div>';
@@ -792,6 +976,16 @@ function renderUps(){
     const can=!bought&&S.qi>=u.cost;
     card.className='u-card '+(bought?'bought':(can?'':'locked'));
     card.querySelector('.u-cost').textContent=bought?'已 炼 成':fmt(u.cost)+' 灵气';
+    if(bought){
+      const tag=card.querySelector('.u-tier-tag');
+      if(tag)tag.textContent=(S.upTier[u.id]||0)+1+'阶';
+      const tb=card.querySelector('.u-tier-btn');
+      if(tb){
+        const c=upTierCost(u);
+        tb.textContent='升阶 '+fmt(c)+' 灵气';
+        tb.disabled=S.qi<c;
+      }
+    }
   });
 }
 function renderBrk(){
@@ -812,9 +1006,15 @@ function renderBrk(){
         <div class="bs-item"><div class="v" id="bsClicks">0</div><div class="k">累计点击</div></div>
         <div class="bs-item"><div class="v" id="bsTime">0分</div><div class="k">修炼时长</div></div>
       </div>
+      <div class="tal-box">
+        <div class="tal-head"><h3>道韵天赋</h3><span class="tal-sub">兵解不灭 · 跨世传承</span><span class="tal-num" id="talNum">道韵 · 0</span></div>
+        <div class="tal-grid" id="talGrid"></div>
+        <div class="tal-hint">每次突破悟得 2 道韵 · 兵解重修亦不散失</div>
+      </div>
       <div class="danger-zone"><button class="ghost" id="wipeBtn">兵解重修（清除全部存档）</button></div>
     </div>`;
   document.getElementById('brkBtn').addEventListener('click',doBreak);
+  renderTal();
   const w=document.getElementById('wipeBtn');
   let armed=false;
   w.addEventListener('click',()=>{
@@ -840,6 +1040,18 @@ function checkAch(silent){
   });
   if(unlocked)renderAch();
 }
+function achReward(){
+  return {qi:Math.max(qps()*120,clickPower()*100,100)};
+}
+function claimAch(id){
+  if(!S.ach[id]||S.achClaimed[id])return;
+  const a=ACH.find(x=>x.id===id);
+  const r=achReward();
+  S.achClaimed[id]=1;
+  S.qi+=r.qi;S.totalAll+=r.qi;S.totalRun+=r.qi;
+  sndUp();toast('成就领赏 · '+a.name,'+'+fmt(r.qi)+' 灵气',true);
+  renderAch();
+}
 function renderAch(){
   const body=document.getElementById('tab-ach');
   if(!body.dataset.built){
@@ -847,17 +1059,20 @@ function renderAch(){
     body.innerHTML='<div class="ach-summary" id="achSummary"></div><div class="a-grid" id="achGrid"></div>';
   }
   const grid=document.getElementById('achGrid');
-  const sig=ACH.map(a=>S.ach[a.id]?1:0).join('');
+  const sig=ACH.map(a=>(S.ach[a.id]?1:0)+(S.achClaimed[a.id]?2:0)).join('');
   if(grid.dataset.sig!==sig){
     grid.dataset.sig=sig;
     grid.innerHTML='';
     ACH.forEach(a=>{
-      const done=!!S.ach[a.id];
+      const done=!!S.ach[a.id],claimed=!!S.achClaimed[a.id];
       const el=document.createElement('div');
       el.className='a-card '+(done?'done':'locked');
-      el.innerHTML=`<div class="b-glyph">${a.glyph}</div><div class="a-txt"><div class="a-name">${a.name}</div><div class="a-desc">${a.desc}</div></div>`;
+      el.innerHTML=`<div class="b-glyph">${a.glyph}</div><div class="a-txt"><div class="a-name">${a.name}</div><div class="a-desc">${a.desc}</div>
+        ${done&&!claimed?'<button class="a-claim" data-ach="'+a.id+'">领 取</button>':''}
+        ${claimed?'<div style="margin-top:6px;font-size:11px;color:var(--text-dim);letter-spacing:2px">已 领 赏</div>':''}</div>`;
       grid.appendChild(el);
     });
+    grid.querySelectorAll('.a-claim').forEach(b=>b.addEventListener('click',()=>claimAch(b.dataset.ach)));
   }
   document.getElementById('achSummary').innerHTML=
     `已得 <b style="color:var(--jade)">${achCount()}</b> / ${ACH.length} 件成就 · 每件成就为全局产出提供 <b style="color:var(--gold-bright)">+1%</b> 气运`;
@@ -881,7 +1096,7 @@ function spawnSpirit(){
       buff={mult:5,t:60};
       toast('仙缘 · 悟道','灵台清明！60 秒内全部产出 ×5',true);
     }else{
-      const gain=Math.max(13,Math.min(S.qi*0.15,qps()*1500))+qps()*10;
+      const gain=(Math.max(13,Math.min(S.qi*0.15,qps()*1500))+qps()*10)*(1+0.25*talLv('lingchao'));
       S.qi+=gain;S.totalAll+=gain;S.totalRun+=gain;
       fx(e.clientX,e.clientY,'+'+fmt(gain));
       toast('仙缘 · 灵气暴增','得一缕先天灵机，+'+fmt(gain)+' 灵气',true);
@@ -891,8 +1106,10 @@ function spawnSpirit(){
   setTimeout(remove,13200);
 }
 
-/* ================= 存档 ================= */
-const SAVE_KEY='lingxu_save_v2'; // v2：与旧版标签页隔离，避免其旧状态回写覆盖进度
+let pendingOffline=null; // 离线收益先记录，进游戏后以「闭关归来」模态领取
+const SLOT_COUNT=3;
+const slotKey=i=>'lingxu_save_v2_s'+i;
+const curSaveKey=()=>slotKey(SET.slot||1);
 let wipePending=false; // 清档后跳过所有保存，防止 beforeunload 把旧档写回
 let lastSavedStr='';
 function save(){
@@ -900,7 +1117,8 @@ function save(){
   S.last=Date.now();
   lastSavedStr=JSON.stringify(S);
   try{
-    const curRaw=localStorage.getItem(SAVE_KEY);
+    const key=curSaveKey();
+    const curRaw=localStorage.getItem(key);
     if(curRaw){
       try{
         const cur=JSON.parse(curRaw);
@@ -913,29 +1131,28 @@ function save(){
         }
       }catch(e){}
     }
-    localStorage.setItem(SAVE_KEY,lastSavedStr);
+    localStorage.setItem(key,lastSavedStr);
   }catch(e){}
 }
 function load(){
   try{
-    let raw=localStorage.getItem(SAVE_KEY);
+    let raw=localStorage.getItem(curSaveKey());
     if(!raw){
-      raw=localStorage.getItem('lingxu_save_v1'); // 一次性迁移旧存档
-      if(raw)localStorage.removeItem('lingxu_save_v1');
+      // 一次性迁移：旧版无槽位存档 / v1 存档 → 迁入当前槽
+      raw=localStorage.getItem('lingxu_save_v2')||localStorage.getItem('lingxu_save_v1');
+      if(raw)localStorage.setItem(curSaveKey(),raw);
     }
     if(!raw)return false;
     const d=JSON.parse(raw);
     S={...S,...d};
+    ['upTier','achClaimed','tal'].forEach(k=>{if(!S[k]||typeof S[k]!=='object')S[k]={};});
+    if(typeof S.daoyun!=='number'||!(S.daoyun>=0))S.daoyun=0;
     lastSavedStr=JSON.stringify(S);
-    // 离线收益
+    // 离线收益：先记录，进游戏后以「闭关归来」模态领取
     const gap=(Date.now()-(d.last||Date.now()))/1000;
     if(gap>60){
       const rate=qps();
-      if(rate>0){
-        const gain=rate*Math.min(gap,8*3600)*0.5;
-        S.qi+=gain;S.totalAll+=gain;S.totalRun+=gain;
-        setTimeout(()=>toast('闭关归来','离关 '+Math.floor(gap/60)+' 分钟，静修获得 '+fmt(gain)+' 灵气',true),600);
-      }
+      if(rate>0)pendingOffline={gap,gain:rate*Math.min(gap,8*3600)*0.5};
     }
     return true;
   }catch(e){return false;}
@@ -950,11 +1167,12 @@ setInterval(()=>{
   const rate=qps();
   S.qi+=rate*dt;S.totalAll+=rate*dt;S.totalRun+=rate*dt;
   if(buff){buff.t-=dt;if(buff.t<=0){buff=null;toast('灵潮退去','天地灵气归于平静');}}
-  if(now>nextSpirit){nextSpirit=now+(45+Math.random()*105)*1000;spawnSpirit();}
+  const spiritGap=(45+Math.random()*105)*1000;
+  if(now>nextSpirit){nextSpirit=now+spiritGap;spawnSpirit();}
   S.last=now;
 },100);
 
-setInterval(()=>{refreshList();renderUps();renderAch();renderBrkIfVisible();updateStatic();},250);
+setInterval(()=>{refreshList();renderUps();renderAch();renderBrkIfVisible();renderTal();updateStatic();},250);
 setInterval(()=>checkAch(false),1000);
 function renderBrkIfVisible(){
   const t=document.getElementById('tab-brk');
@@ -1045,6 +1263,7 @@ function applySoundBtn(){
 function syncSetUI(){
   document.getElementById('swSound').classList.toggle('on',soundOn);
   document.getElementById('swFx').classList.toggle('on',fxOn);
+  document.getElementById('swBgm').classList.toggle('on',bgmOn);
   document.getElementById('volRange').value=Math.round(masterVol*100);
   document.getElementById('volNum').textContent=Math.round(masterVol*100)+'%';
 }
@@ -1061,10 +1280,16 @@ function setFx(v){
   fxOn=!!v;SET.fx=fxOn;saveSet();
   document.getElementById('swFx').classList.toggle('on',fxOn);
 }
+function setBgm(v){
+  bgmOn=!!v;SET.bgm=bgmOn;saveSet();
+  document.getElementById('swBgm').classList.toggle('on',bgmOn);
+  if(bgmOn){AC=null;bgmNote();}
+}
 document.getElementById('soundBtn').addEventListener('click',()=>{setSound(!soundOn);if(soundOn)sndUp();});
 document.getElementById('settingsBtn').addEventListener('click',()=>showSettings('game'));
 document.getElementById('swSound').addEventListener('click',()=>{setSound(!soundOn);if(soundOn)sndUp();});
 document.getElementById('swFx').addEventListener('click',()=>setFx(!fxOn));
+document.getElementById('swBgm').addEventListener('click',()=>setBgm(!bgmOn));
 document.getElementById('volRange').addEventListener('input',e=>{
   masterVol=e.target.value/100;SET.vol=masterVol;saveSet();
   document.getElementById('volNum').textContent=e.target.value+'%';
@@ -1075,11 +1300,13 @@ document.getElementById('setMenu').addEventListener('click',()=>{
   save();setEl.style.display='none';refreshMenu();menuEl.style.display='';
 });
 document.getElementById('mSettings').addEventListener('click',()=>showSettings('menu'));
-document.getElementById('mStart').addEventListener('click',()=>{
+function enterGame(){
   menuEl.style.display='none';
-  if(!hadSave)setTimeout(()=>toast('踏入灵墟','点击丹田「炁」聚气修行，攒够灵气后开辟洞府，终有一日问鼎长生。',false),400);
-});
-document.getElementById('mContinue').addEventListener('click',()=>{menuEl.style.display='none';});
+  if(pendingOffline){showOfflineModal();}
+  else if(!hadSave)setTimeout(()=>toast('踏入灵墟','点击丹田「炁」聚气修行，攒够灵气后开辟洞府，终有一日问鼎长生。',false),400);
+}
+document.getElementById('mStart').addEventListener('click',enterGame);
+document.getElementById('mContinue').addEventListener('click',enterGame);
 document.getElementById('mNew').addEventListener('click',function(){
   if(this.dataset.armed!=='1'){
     this.dataset.armed='1';this.textContent='再点一次：道基尽毁，重来一世';
@@ -1088,22 +1315,68 @@ document.getElementById('mNew').addEventListener('click',function(){
   doWipe();
 });
 function doWipe(){
+  // 道韵天赋跨世传承：清档后写入仅含道韵的新档，重开一世不散失
+  let dy=0,tl={};
+  try{const d=JSON.parse(localStorage.getItem(curSaveKey()));dy=d.daoyun||0;tl=d.tal||{};}catch(e){}
   wipePending=true;
-  localStorage.removeItem(SAVE_KEY);
+  localStorage.removeItem('lingxu_save_v2'); // 防止清档后又被旧档迁移复活
+  localStorage.removeItem('lingxu_save_v1');
+  localStorage.setItem(curSaveKey(),JSON.stringify({daoyun:dy,tal:tl,last:Date.now()}));
   location.reload();
 }
+/* 离线收益：闭关归来模态 */
+const fmtDur=s=>s>=3600?Math.floor(s/3600)+' 时 '+Math.floor(s%3600/60)+' 分':Math.max(1,Math.floor(s/60))+' 分';
+function showOfflineModal(){
+  const po=pendingOffline;pendingOffline=null;
+  const d=document.createElement('div');
+  d.className='modal';
+  d.innerHTML=`<div class="modal-card">
+    <h3>闭关归来</h3>
+    <div class="modal-sub">山中方一日 · 世上已千年</div>
+    <div class="modal-num">+${fmt(po.gain)}</div>
+    <div class="modal-rows">
+      <div class="s-row"><span>闭关时长</span><b>${fmtDur(po.gap)}</b></div>
+      <div class="s-row"><span>闭关前吐纳</span><b>${fmtRate(qps())}/秒</b></div>
+      <div class="s-row"><span>离线效率</span><b>50% · 上限 8 小时</b></div>
+    </div>
+    <button class="big-btn" id="claimOff">收 功 入 体</button></div>`;
+  document.body.appendChild(d);
+  d.querySelector('#claimOff').addEventListener('click',()=>{
+    S.qi+=po.gain;S.totalAll+=po.gain;S.totalRun+=po.gain;
+    sndUp();d.remove();
+    toast('收功完毕','离关所得已尽数入气海',true);
+    save();
+  });
+}
 function refreshMenu(){
-  const has=!!localStorage.getItem(SAVE_KEY);
+  const has=!!localStorage.getItem(curSaveKey());
   document.getElementById('mContinue').style.display=has?'':'none';
   const n=document.getElementById('mNew');
   n.style.display=has?'':'none';
   n.dataset.armed='';n.textContent='重新开始';
   document.getElementById('mStart').style.display=has?'none':'';
+  // 存档位
+  const row=document.getElementById('slotRow');
+  row.innerHTML='';
+  for(let i=1;i<=SLOT_COUNT;i++){
+    let inf=null;
+    try{const d=JSON.parse(localStorage.getItem(slotKey(i)));if(d)inf={realm:realmName(d.realm||0),total:d.totalAll||0,ach:Object.keys(d.ach||{}).length};}catch(e){}
+    const el=document.createElement('button');
+    el.className='slot-card'+(i===(SET.slot||1)?' active':'')+(inf?'':' empty');
+    el.innerHTML=`<div class="sl-name">${['壹','贰','叁'][i-1]}号档</div>`+
+      (inf?`<div class="sl-realm">${inf.realm}</div><div class="sl-info">灵气 ${fmt(inf.total)} · 成就 ${inf.ach}</div>`
+          :`<div class="sl-info">虚 位 以 待</div>`);
+    el.addEventListener('click',()=>{
+      if(i===(SET.slot||1))return;
+      save();SET.slot=i;saveSet();location.reload();
+    });
+    row.appendChild(el);
+  }
 }
 // 多标签页保护：别处写入了更领先的存档（历劫总灵气更高）时，本页重载采用最新进度；
 // 落后的写入（如被遗忘的旧标签页）则被忽略，绝不会用它覆盖当前进度。清档（newValue=null）会同步到所有标签页。
 window.addEventListener('storage',e=>{
-  if(e.key!==SAVE_KEY)return;
+  if(e.key!==curSaveKey())return;
   if(e.newValue===null){wipePending=true;location.reload();return;}
   if(!lastSavedStr)return;
   try{
@@ -1118,6 +1391,7 @@ const hadSave=load();
 checkAch(true); // 静默结算旧进度，避免开局成就提示刷屏
 renderBuildings();renderUps();renderAch();renderBrk();refreshList();updateStatic();
 applySoundBtn();
+document.getElementById('swBgm').classList.toggle('on',bgmOn);
 requestAnimationFrame(raf);
 if(!hadSave){
   nextSpirit=Date.now()+90*1000;
