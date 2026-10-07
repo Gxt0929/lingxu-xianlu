@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>灵墟 · 修仙录</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zhi+Mang+Xing&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<style>
+/* 本地字体：APK/EXE 离线场景使用；声明在后优先级更高，本地缺失时回退在线字体或 KaiTi */
+@font-face{
+  font-family:'Zhi Mang Xing';
+  font-style:normal;font-weight:400;font-display:swap;
+  src:url('fonts/ZhiMangXing-Regular.ttf') format('truetype');
+}
+:root{
+  --ink:#070b09;
+  --panel:rgba(13,20,16,.78);
+  --panel-line:rgba(212,175,55,.22);
+  --gold:#d4af37;
+  --gold-bright:#f0d98c;
+  --jade:#57d9a3;
+  --jade-dim:#2a7a5c;
+  --text:#e9e4d3;
+  --text-dim:#9aa596;
+  --danger:#e0705a;
+  --serif:'Noto Serif SC','STSong','SimSun',Georgia,serif;
+  --calli:'Zhi Mang Xing','KaiTi','STKaiti',cursive;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  background:var(--ink);
+  color:var(--text);
+  font-family:var(--serif);
+  overflow-x:hidden;
+  min-height:100vh;
+  position:relative;
+}
+/* ---------- 背景氛围 ---------- */
+.bg-mist{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg-mist::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(900px 600px at 12% 8%, rgba(46,125,90,.20), transparent 60%),
+    radial-gradient(800px 700px at 88% 90%, rgba(160,120,30,.14), transparent 60%),
+    radial-gradient(600px 500px at 70% 15%, rgba(40,90,120,.10), transparent 65%),
+    linear-gradient(180deg,#0a110d 0%, #070b09 100%);
+}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.5}
+.blob.b1{width:420px;height:420px;background:rgba(58,161,116,.16);top:-120px;left:-80px;animation:drift1 26s ease-in-out infinite alternate}
+.blob.b2{width:520px;height:520px;background:rgba(190,140,40,.10);bottom:-180px;right:-120px;animation:drift2 34s ease-in-out infinite alternate}
+.blob.b3{width:300px;height:300px;background:rgba(60,120,160,.10);top:40%;left:55%;animation:drift1 40s ease-in-out infinite alternate-reverse}
+@keyframes drift1{from{transform:translate(0,0) scale(1)}to{transform:translate(120px,80px) scale(1.15)}}
+@keyframes drift2{from{transform:translate(0,0) scale(1)}to{transform:translate(-140px,-60px) scale(1.1)}}
+.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");}
+.wrap{position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:20px 22px 60px}
+
+/* ---------- 头部 ---------- */
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding:6px 4px 18px;border-bottom:1px solid rgba(212,175,55,.14);margin-bottom:22px}
+.title-block{display:flex;align-items:baseline;gap:14px}
+h1{font-family:var(--calli);font-weight:400;font-size:52px;line-height:1;color:var(--gold-bright);text-shadow:0 0 24px rgba(212,175,55,.35);letter-spacing:4px}
+.subtitle{color:var(--text-dim);font-size:13px;letter-spacing:6px;padding-bottom:8px}
+.head-right{display:flex;align-items:center;gap:10px}
+.chip{
+  display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:999px;
+  border:1px solid var(--panel-line);background:rgba(212,175,55,.06);
+  font-size:13px;color:var(--gold-bright);letter-spacing:2px;white-space:nowrap;
+}
+.chip.realm{border-color:rgba(87,217,163,.35);color:var(--jade);background:rgba(87,217,163,.06)}
+.chip.buff{border-color:rgba(240,180,80,.5);color:#f0c060;animation:buffPulse 1.2s ease-in-out infinite}
+@keyframes buffPulse{0%,100%{box-shadow:0 0 0 0 rgba(240,180,80,.25)}50%{box-shadow:0 0 14px 2px rgba(240,180,80,.3)}}
+button.ghost{
+  font-family:var(--serif);font-size:12px;letter-spacing:2px;color:var(--text-dim);
+  background:transparent;border:1px solid rgba(255,255,255,.14);border-radius:999px;
+  padding:6px 14px;cursor:pointer;transition:.2s;
+}
+button.ghost:hover{color:var(--text);border-color:rgba(212,175,55,.4)}
+
+/* ---------- 布局 ---------- */
+.grid{display:grid;grid-template-columns:400px 1fr;gap:22px;align-items:start}
+.panel{
+  background:var(--panel);border:1px solid var(--panel-line);border-radius:16px;
+  box-shadow:0 10px 40px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.04);
+  backdrop-filter:blur(6px);
+  position:relative;
+}
+.panel::before{content:'';position:absolute;inset:6px;border:1px solid rgba(212,175,55,.08);border-radius:11px;pointer-events:none}
+
+/* ---------- 左：修炼区 ---------- */
+.orb-panel{padding:30px 26px 26px;display:flex;flex-direction:column;align-items:center}
+.orb-zone{position:relative;width:300px;height:300px;display:grid;place-items:center;margin:8px 0 4px}
+.orb-ring-bg{position:absolute;inset:0}
+.orb{
+  position:relative;width:212px;height:212px;border-radius:50%;cursor:pointer;border:none;
+  background:
+    radial-gradient(circle at 38% 32%, rgba(190,255,220,.28), transparent 42%),
+    radial-gradient(circle at 50% 55%, #16443a 0%, #0e2b24 55%, #081a15 100%);
+  box-shadow:
+    0 0 0 1px rgba(87,217,163,.35),
+    0 0 40px rgba(58,161,116,.35),
+    inset 0 0 34px rgba(0,0,0,.55),
+    inset 0 0 80px rgba(58,161,116,.18);
+  display:grid;place-items:center;
+  transition:transform .12s ease, box-shadow .3s;
+  animation:orbBreath 3.4s ease-in-out infinite;
+}
+@keyframes orbBreath{0%,100%{box-shadow:0 0 0 1px rgba(87,217,163,.35),0 0 34px rgba(58,161,116,.3),inset 0 0 34px rgba(0,0,0,.55),inset 0 0 80px rgba(58,161,116,.18)}
+50%{box-shadow:0 0 0 1px rgba(87,217,163,.5),0 0 58px rgba(58,161,116,.5),inset 0 0 34px rgba(0,0,0,.55),inset 0 0 95px rgba(58,161,116,.26)}}
+.orb:hover{transform:scale(1.03)}
+.orb:active{transform:scale(.95)}
+.orb .glyph{
+  font-family:var(--calli);font-size:104px;color:var(--gold-bright);line-height:1;
+  text-shadow:0 0 18px rgba(212,175,55,.65),0 0 60px rgba(212,175,55,.3);user-select:none;
+}
+.orb .orbit{
+  position:absolute;inset:-24px;border-radius:50%;pointer-events:none;
+  background:conic-gradient(from 0deg, transparent 0 78%, rgba(212,175,55,.5) 92%, transparent 100%);
+  -webkit-mask:radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px));
+          mask:radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px));
+  animation:spin 7s linear infinite;
+}
+.orb .orbit.two{inset:-46px;animation-duration:16s;animation-direction:reverse;opacity:.5;
+  background:conic-gradient(from 120deg, transparent 0 70%, rgba(87,217,163,.55) 88%, transparent 100%);}
+@keyframes spin{to{transform:rotate(360deg)}}
+.progress-label{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:2px;color:var(--text-dim);white-space:nowrap}
+.stat-big{text-align:center;margin-top:26px}
+.stat-big .num{font-size:44px;font-weight:900;color:var(--text);letter-spacing:1px;line-height:1.15;text-shadow:0 0 20px rgba(233,228,211,.12)}
+.stat-big .unit{font-size:15px;color:var(--text-dim);letter-spacing:3px}
+.stat-rows{width:100%;margin-top:18px;border-top:1px dashed rgba(255,255,255,.09);padding-top:14px;display:flex;flex-direction:column;gap:8px}
+.s-row{display:flex;justify-content:space-between;font-size:13.5px;color:var(--text-dim)}
+.s-row b{color:var(--text);font-weight:600}
+.s-row b.jade{color:var(--jade)}
+.s-row b.gold{color:var(--gold-bright)}
+
+/* ---------- 右：面板区 ---------- */
+.main-panel{padding:0 0 8px;overflow:hidden}
+.tabs{display:flex;gap:4px;padding:14px 18px 0;border-bottom:1px solid rgba(212,175,55,.14)}
+.tab{
+  font-family:var(--serif);font-size:15px;letter-spacing:4px;color:var(--text-dim);
+  background:transparent;border:none;border-bottom:2px solid transparent;
+  padding:10px 18px 12px;cursor:pointer;transition:.2s;
+}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--gold-bright);border-bottom-color:var(--gold)}
+.buy-modes{margin-left:auto;display:flex;gap:6px;align-items:center;padding-bottom:8px}
+.buy-modes button{
+  font-family:var(--serif);font-size:12px;padding:4px 12px;border-radius:8px;cursor:pointer;
+  background:transparent;color:var(--text-dim);border:1px solid rgba(255,255,255,.14);transition:.15s;
+}
+.buy-modes button.active{color:#08120e;background:var(--gold);border-color:var(--gold);font-weight:600}
+.tab-body{padding:14px 18px 18px;max-height:calc(100vh - 260px);min-height:420px;overflow-y:auto}
+.tab-body::-webkit-scrollbar{width:8px}
+.tab-body::-webkit-scrollbar-thumb{background:rgba(212,175,55,.25);border-radius:4px}
+.tab-body::-webkit-scrollbar-track{background:transparent}
+
+/* 建筑行 */
+.b-row{
+  display:flex;align-items:center;gap:14px;padding:13px 14px;border-radius:12px;cursor:pointer;
+  border:1px solid transparent;transition:background .15s, border-color .15s, transform .1s;
+}
+.b-row:hover{background:rgba(212,175,55,.05);border-color:rgba(212,175,55,.15)}
+.b-row:active{transform:scale(.995)}
+.b-row.locked{opacity:.42;cursor:not-allowed}
+.b-row.locked:hover{background:transparent;border-color:transparent}
+.b-row.flash{animation:flashBuy .5s ease-out}
+@keyframes flashBuy{0%{background:rgba(87,217,163,.22)}100%{background:transparent}}
+.b-glyph{
+  width:52px;height:52px;border-radius:12px;flex:none;display:grid;place-items:center;
+  font-family:var(--calli);font-size:30px;color:var(--gold-bright);
+  background:linear-gradient(145deg, rgba(212,175,55,.14), rgba(212,175,55,.04));
+  border:1px solid rgba(212,175,55,.25);text-shadow:0 0 12px rgba(212,175,55,.4);
+}
+.b-info{flex:1;min-width:0}
+.b-name{font-size:15.5px;letter-spacing:1px;display:flex;align-items:center;gap:10px}
+.b-name .owned{font-size:13px;color:var(--jade);letter-spacing:0}
+.b-desc{font-size:12px;color:var(--text-dim);margin-top:3px;letter-spacing:.5px}
+.b-meta{font-size:11.5px;color:rgba(87,217,163,.75);margin-top:4px;letter-spacing:.5px}
+.b-cost{text-align:right;flex:none;min-width:110px}
+.b-cost .c-num{font-size:17px;font-weight:600;color:var(--gold-bright)}
+.b-row.locked .b-cost .c-num{color:var(--danger)}
+.b-cost .c-unit{display:block;font-size:10.5px;color:var(--text-dim);letter-spacing:2px;margin-top:2px}
+
+/* 升级卡 */
+.u-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.u-card{
+  padding:13px 15px;border-radius:12px;cursor:pointer;border:1px solid rgba(212,175,55,.16);
+  background:rgba(212,175,55,.04);transition:.15s;
+}
+.u-card:hover{border-color:rgba(212,175,55,.4);background:rgba(212,175,55,.08)}
+.u-card.locked{opacity:.4;cursor:not-allowed}
+.u-card.bought{opacity:.55;cursor:default;border-style:dashed}
+.u-card.bought:hover{border-color:rgba(212,175,55,.16)}
+.u-card.bought .u-cost{color:var(--jade)}
+.u-name{font-size:14px;color:var(--gold-bright);letter-spacing:1px}
+.u-desc{font-size:11.5px;color:var(--text-dim);margin-top:4px;line-height:1.5}
+.u-cost{font-size:13px;color:var(--gold-bright);margin-top:8px}
+.u-card.locked .u-cost{color:var(--danger)}
+
+/* 成就 */
+.ach-summary{padding:10px 14px;margin-bottom:12px;font-size:13px;color:var(--text-dim);letter-spacing:1px;border:1px dashed rgba(255,255,255,.12);border-radius:10px}
+.a-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.a-card{
+  display:flex;gap:12px;align-items:center;padding:11px 13px;border-radius:12px;
+  border:1px solid rgba(212,175,55,.14);background:rgba(212,175,55,.03);transition:.2s;
+}
+.a-card .b-glyph{width:42px;height:42px;font-size:23px;border-radius:10px}
+.a-card.locked{opacity:.35;filter:grayscale(.7)}
+.a-card.done{border-color:rgba(87,217,163,.4);background:rgba(87,217,163,.07);box-shadow:0 0 16px rgba(87,217,163,.1)}
+.a-name{font-size:14px;color:var(--gold-bright);letter-spacing:1px}
+.a-card.done .a-name{color:var(--jade)}
+.a-desc{font-size:11.5px;color:var(--text-dim);margin-top:3px;line-height:1.45}
+.a-txt{min-width:0}
+.u-tag{display:inline-block;font-size:10px;letter-spacing:2px;padding:2px 8px;border-radius:4px;margin-bottom:6px;background:rgba(87,217,163,.12);color:var(--jade)}
+
+/* 突破 */
+.brk-box{text-align:center;padding:30px 20px 26px}
+.realm-curt{font-family:var(--calli);font-size:64px;color:var(--gold-bright);text-shadow:0 0 30px rgba(212,175,55,.4);letter-spacing:6px;line-height:1.1}
+.realm-next{margin-top:6px;font-size:13px;color:var(--text-dim);letter-spacing:3px}
+.brk-bar{margin:26px auto 8px;max-width:460px;height:14px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden;border:1px solid rgba(212,175,55,.2)}
+.brk-fill{height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,var(--jade-dim),var(--jade),var(--gold-bright));transition:width .4s;box-shadow:0 0 14px rgba(87,217,163,.5)}
+.brk-req{font-size:12.5px;color:var(--text-dim);letter-spacing:1px}
+.brk-btn{
+  margin-top:24px;font-family:var(--calli);font-size:30px;letter-spacing:8px;color:#08120e;
+  background:linear-gradient(135deg,var(--gold-bright),var(--gold));border:none;border-radius:12px;
+  padding:12px 46px;cursor:pointer;transition:.2s;box-shadow:0 6px 26px rgba(212,175,55,.35);
+}
+.brk-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 34px rgba(212,175,55,.5)}
+.brk-btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+.brk-stats{margin-top:30px;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;max-width:620px;margin-left:auto;margin-right:auto}
+.bs-item{padding:12px;border:1px dashed rgba(255,255,255,.1);border-radius:10px}
+.bs-item .v{font-size:19px;font-weight:600;color:var(--text)}
+.bs-item .k{font-size:11px;color:var(--text-dim);letter-spacing:2px;margin-top:3px}
+.danger-zone{margin-top:26px}
+.danger-zone button{border-color:rgba(224,112,90,.4);color:var(--danger)}
+.danger-zone button:hover{color:#ff8d75;border-color:var(--danger)}
+
+/* ---------- 点击特效 ---------- */
+.float-num{
+  position:fixed;z-index:50;pointer-events:none;font-family:var(--serif);font-weight:900;
+  color:var(--gold-bright);text-shadow:0 0 12px rgba(212,175,55,.7),0 2px 4px rgba(0,0,0,.6);
+  animation:floatUp 1.1s ease-out forwards;will-change:transform,opacity;
+}
+@keyframes floatUp{
+  0%{transform:translate(-50%,-50%) scale(.7);opacity:0}
+  12%{opacity:1;transform:translate(-50%,-70%) scale(1.1)}
+  100%{transform:translate(-50%,-190%) scale(.9);opacity:0}
+}
+.spark{
+  position:fixed;z-index:49;pointer-events:none;width:5px;height:5px;border-radius:50%;
+  background:var(--gold-bright);box-shadow:0 0 8px rgba(240,217,140,.9);
+  animation:sparkFly .7s ease-out forwards;will-change:transform,opacity;
+}
+@keyframes sparkFly{
+  0%{transform:translate(0,0) scale(1);opacity:1}
+  100%{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0}
+}
+
+/* ---------- 仙缘事件 ---------- */
+.spirit{
+  position:fixed;z-index:60;width:54px;height:54px;border-radius:50%;cursor:pointer;
+  background:radial-gradient(circle at 40% 35%, #fff7d6, var(--gold-bright) 45%, rgba(212,175,55,.15) 75%);
+  box-shadow:0 0 26px rgba(240,217,140,.85),0 0 70px rgba(212,175,55,.4);
+  animation:spiritFly 13s linear forwards;
+}
+.spirit::after{
+  content:'緣';position:absolute;inset:0;display:grid;place-items:center;
+  font-family:var(--calli);font-size:26px;color:#5c4708;
+}
+@keyframes spiritFly{
+  0%{left:-70px;top:var(--sy);transform:scale(.6)}
+  10%{transform:scale(1)}
+  45%{top:calc(var(--sy) + var(--sdy));}
+  90%{transform:scale(1)}
+  100%{left:calc(100vw + 70px);top:var(--sy);transform:scale(.6)}
+}
+
+/* ---------- Toast ---------- */
+.toasts{position:fixed;top:22px;left:50%;transform:translateX(-50%);z-index:100;display:flex;flex-direction:column;gap:10px;align-items:center;pointer-events:none}
+.toast{
+  background:rgba(13,20,16,.94);border:1px solid var(--panel-line);border-radius:12px;
+  padding:12px 26px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.5);
+  animation:toastIn .35s ease-out, toastOut .4s ease-in forwards;animation-delay:0s, 3.4s;
+  max-width:min(480px,90vw);
+}
+.toast h4{font-family:var(--calli);font-weight:400;font-size:22px;color:var(--gold-bright);letter-spacing:3px}
+.toast p{font-size:12.5px;color:var(--text-dim);margin-top:4px;letter-spacing:1px;line-height:1.6}
+.toast.jade{border-color:rgba(87,217,163,.4)}
+.toast.jade h4{color:var(--jade)}
+@keyframes toastIn{from{opacity:0;transform:translateY(-14px) scale(.95)}to{opacity:1;transform:none}}
+@keyframes toastOut{to{opacity:0;transform:translateY(-10px)}}
+
+/* 开场浮现 */
+.orb-panel,.main-panel{animation:rise .7s ease-out backwards}
+.main-panel{animation-delay:.12s}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+@media (max-width:980px){
+  .grid{grid-template-columns:1fr}
+  h1{font-size:40px}
+  .tab-body{max-height:none}
+  .head-right .hint-chip{display:none}
+}
+/* 手机竖屏（APK WebView / 窄窗） */
+@media (max-width:520px){
+  h1{font-size:34px;letter-spacing:2px}
+  .subtitle{font-size:11px;letter-spacing:3px}
+  .wrap{padding:12px 12px 48px}
+  header{flex-wrap:wrap}
+  .orb-panel{padding:22px 14px 20px}
+  .orb-zone{width:236px;height:236px}
+  .orb{width:170px;height:170px}
+  .orb .glyph{font-size:80px}
+  .orb .orbit{inset:-16px}
+  .orb .orbit.two{inset:-30px}
+  .stat-big{margin-top:18px}
+  .stat-big .num{font-size:36px}
+  .tabs{flex-wrap:wrap;padding:10px 10px 0}
+  .tab{font-size:13px;letter-spacing:2px;padding:8px 10px 10px}
+  .buy-modes{padding-bottom:6px}
+  .tab-body{padding:10px 12px 16px;min-height:0}
+  .brk-bar{max-width:100%}
+}
+body{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+
+/* ================= 主菜单 & 设置 ================= */
+.overlay{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(1200px 800px at 50% 28%,rgba(22,46,36,.9),rgba(4,8,6,.97));
+  backdrop-filter:blur(5px)}
+#settings.overlay{z-index:95}
+.menu-inner{text-align:center;display:flex;flex-direction:column;align-items:center;gap:13px;max-width:400px;width:88%}
+.menu-title{font-family:var(--serif);font-size:clamp(40px,7vw,58px);margin:0;font-weight:900;letter-spacing:8px;
+  background:linear-gradient(135deg,#f7ecd0,#f0d98c 45%,#c9a44a);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 30px rgba(240,217,140,.22))}
+.menu-sub{color:rgba(230,240,235,.5);letter-spacing:7px;font-size:13px;margin:-2px 0 16px}
+.menu-btn{width:100%;padding:13px 0;font-size:16px;letter-spacing:6px;border-radius:14px;
+  border:1px solid rgba(240,217,140,.38);background:rgba(240,217,140,.05);color:#e9e4cf;cursor:pointer;
+  font-family:inherit;transition:.18s}
+.menu-btn:hover{background:rgba(240,217,140,.13);border-color:rgba(240,217,140,.75);transform:translateY(-1px)}
+.menu-btn.primary{background:linear-gradient(135deg,rgba(87,217,163,.22),rgba(240,217,140,.16));
+  border-color:rgba(87,217,163,.55);color:#dff5ea}
+.menu-btn.danger{border-color:rgba(214,94,74,.45);color:#e2a191}
+.menu-btn.danger:hover{background:rgba(214,94,74,.12);border-color:rgba(214,94,74,.7)}
+.menu-foot{margin-top:20px;color:rgba(230,240,235,.28);font-size:12px;letter-spacing:2px}
+.settings-card{width:min(480px,92%);max-height:86vh;overflow:auto;background:rgba(10,20,16,.94);
+  border:1px solid rgba(240,217,140,.25);border-radius:18px;padding:24px 28px;box-shadow:0 24px 80px rgba(0,0,0,.6)}
+.settings-card h2{margin:0 0 14px;font-family:var(--serif);color:#f0d98c;letter-spacing:10px;font-size:22px;text-align:center;font-weight:900}
+.set-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 0;
+  border-bottom:1px dashed rgba(255,255,255,.08);color:#dfe9e2;font-size:15px}
+.set-row .lab b{display:block;font-size:12px;color:rgba(230,240,235,.4);font-weight:400;margin-top:3px}
+.sw{position:relative;width:52px;height:28px;border-radius:14px;background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.18);cursor:pointer;transition:.2s;flex:none}
+.sw::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#c3cfc8;transition:.2s}
+.sw.on{background:rgba(87,217,163,.32);border-color:rgba(87,217,163,.7)}
+.sw.on::after{left:27px;background:#7fe7b6}
+.vol-wrap{display:flex;align-items:center;gap:10px;flex:1;max-width:220px}
+.vol-wrap input{flex:1;accent-color:#57d9a3;min-width:0}
+.vol-wrap b{width:44px;text-align:right;color:#f0d98c;font-variant-numeric:tabular-nums;font-weight:600}
+.set-btns{display:flex;gap:10px;margin-top:20px}
+.set-btns .ghost{flex:1;justify-content:center}
+
+</style>
+</head>
+<body>
+<div class="bg-mist"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<div class="grain"></div>
+<div class="toasts" id="toasts"></div>
+
+<!-- 主菜单 -->
+<div class="overlay" id="menu">
+  <div class="menu-inner">
+    <h1 class="menu-title">灵墟修仙录</h1>
+    <div class="menu-sub">掐诀 · 聚气 · 问道长生</div>
+    <button class="menu-btn primary" id="mStart">开始修炼</button>
+    <button class="menu-btn primary" id="mContinue" style="display:none">继续修炼</button>
+    <button class="menu-btn danger" id="mNew" style="display:none">重新开始</button>
+    <button class="menu-btn" id="mSettings">设　置</button>
+    <div class="menu-foot">九重境界 · 三十成就 · 离线亦可闭关</div>
+  </div>
+</div>
+
+<!-- 设置界面 -->
+<div class="overlay" id="settings" style="display:none">
+  <div class="settings-card">
+    <h2>设　置</h2>
+    <div class="set-row">
+      <div class="lab">音效<b>聚气、购建、突破等提示音</b></div>
+      <div class="sw" id="swSound"></div>
+    </div>
+    <div class="set-row">
+      <div class="lab">音量</div>
+      <div class="vol-wrap"><input type="range" id="volRange" min="0" max="100" value="100"><b id="volNum">100%</b></div>
+    </div>
+    <div class="set-row">
+      <div class="lab">灵光特效<b>漂浮数字与金色火花</b></div>
+      <div class="sw" id="swFx"></div>
+    </div>
+    <div class="set-row">
+      <div class="lab">全屏显示<b>快捷键：F11 切换 · ESC 退出</b></div>
+      <button class="ghost" id="setFs">切换全屏</button>
+    </div>
+    <div class="set-btns">
+      <button class="ghost" id="setBack">返　回</button>
+      <button class="ghost" id="setMenu">回到主菜单</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="wrap">
+  <header>
+    <div class="title-block">
+      <h1>灵墟修仙录</h1>
+      <div class="subtitle">掐诀 · 聚气 · 问道长生</div>
+    </div>
+    <div class="head-right">
+      <span class="chip realm" id="realmChip">境界 · 炼气期</span>
+      <span class="chip buff" id="buffChip" style="display:none">灵潮 ×5</span>
+      <span class="chip hint-chip" id="saveChip">存档 · 自动保存</span>
+      <button class="ghost" id="soundBtn">音效 · 开</button>
+      <button class="ghost" id="settingsBtn">设置</button>
+    </div>
+  </header>
+
+  <div class="grid">
+    <!-- 左：丹田 -->
+    <section class="panel orb-panel">
+      <div class="orb-zone">
+        <svg class="orb-ring-bg" viewBox="0 0 300 300">
+          <circle cx="150" cy="150" r="146" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="5"/>
+          <circle id="brkRing" cx="150" cy="150" r="146" fill="none" stroke="url(#g1)" stroke-width="5"
+                  stroke-linecap="round" stroke-dasharray="917.3" stroke-dashoffset="917.3"
+                  transform="rotate(-90 150 150)"/>
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#57d9a3"/><stop offset="1" stop-color="#f0d98c"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="orb" id="orb">
+          <div class="orbit"></div>
+          <div class="orbit two"></div>
+          <span class="glyph">炁</span>
+        </div>
+        <div class="progress-label" id="brkLabel">筑基期尚远</div>
+      </div>
+      <div class="stat-big">
+        <div class="num" id="qiNum">0</div>
+        <div class="unit">灵 气</div>
+      </div>
+      <div class="stat-rows">
+        <div class="s-row"><span>吐纳 / 秒</span><b class="jade" id="qpsNum">0</b></div>
+        <div class="s-row"><span>一击聚气</span><b class="gold" id="clickNum">1</b></div>
+        <div class="s-row"><span>历劫灵气</span><b id="totalNum">0</b></div>
+        <div class="s-row"><span>境界加成</span><b class="gold" id="realmMultNum">×1</b></div>
+        <div class="s-row"><span>成就气运</span><b class="gold" id="achBonusNum">+0%</b></div>
+      </div>
+    </section>
+
+    <!-- 右：主面板 -->
+    <section class="panel main-panel">
+      <div class="tabs">
+        <button class="tab active" data-tab="build">洞府</button>
+        <button class="tab" data-tab="ups">法宝</button>
+        <button class="tab" data-tab="ach">成就</button>
+        <button class="tab" data-tab="brk">突破</button>
+        <div class="buy-modes" id="buyModes">
+          <button data-m="1" class="active">×1</button>
+          <button data-m="10">×10</button>
+          <button data-m="100">×100</button>
+          <button data-m="max">最大</button>
+        </div>
+      </div>
+      <div class="tab-body" id="tab-build"></div>
+      <div class="tab-body" id="tab-ups" style="display:none"></div>
+      <div class="tab-body" id="tab-ach" style="display:none"></div>
+      <div class="tab-body" id="tab-brk" style="display:none"></div>
+    </section>
+  </div>
+</div>
+
+<script>
+'use strict';
+/* ================= 数据定义 ================= */
+const BUILDINGS=[
+  {id:'zhuang',name:'聚气桩',glyph:'桩',desc:'以灵木立桩，引天地气机入体',cost:15,prod:0.1},
+  {id:'quan', name:'聚灵泉',glyph:'泉',desc:'灵泉汩汩，润泽经脉窍穴',cost:100,prod:1},
+  {id:'yao',  name:'灵药园',glyph:'药',desc:'灵草四时生长，可入丹炉',cost:1100,prod:8},
+  {id:'fu',   name:'修行洞府',glyph:'府',desc:'灵脉汇聚之处的洞天福地',cost:12000,prod:47},
+  {id:'di',   name:'外门弟子',glyph:'弟',desc:'弟子轮值打坐，代师蓄气',cost:1.3e5,prod:260},
+  {id:'shou', name:'灵兽山',glyph:'兽',desc:'灵兽吐纳云雾，反哺宗门',cost:1.4e6,prod:1400},
+  {id:'zhen', name:'护山大阵',glyph:'阵',desc:'聚灵大阵周天运转，昼夜不息',cost:2e7,prod:7800},
+  {id:'shan', name:'仙山福地',glyph:'山',desc:'浮空仙山，灵气自成一海',cost:3.3e8,prod:44000},
+];
+const TIERS=[[10,12],[25,150],[50,3000],[100,60000]];
+const TIER_NAMES=['凝气','聚灵','通玄','化神'];
+const UPS=[];
+BUILDINGS.forEach(b=>{
+  TIERS.forEach(([req,cm],i)=>{
+    UPS.push({
+      id:b.id+'_u'+i, kind:'b', target:b.id, name:`${b.name} · ${TIER_NAMES[i]}`,
+      desc:`洞府中灵机愈发醇厚，${b.name}产出 ×2`, cost:b.cost*cm,
+      cond:()=>cnt(b.id)>=req, req
+    });
+  });
+});
+const CLICK_UPS=[
+  {id:'c1',name:'吐纳诀',desc:'调匀呼吸，一击聚气 ×2',cost:100},
+  {id:'c2',name:'炼气诀',desc:'引气入脉，一击聚气 ×2',cost:2500},
+  {id:'c3',name:'灵犀一点',desc:'点击时额外获得每秒产出的 1%',cost:1.5e4},
+  {id:'c4',name:'周天运转',desc:'气走周天，一击聚气 ×2',cost:2e5},
+  {id:'c5',name:'龟息绵绵',desc:'点击时额外获得每秒产出的 2%',cost:2e6},
+  {id:'c6',name:'金丹真息',desc:'真息绵绵不绝，一击聚气 ×3',cost:5e7},
+  {id:'c7',name:'大道归一',desc:'触类旁通，点击额外获得每秒产出的 5%',cost:2e9},
+];
+const GLOBAL_UPS=[
+  {id:'g1',name:'宗门气运',desc:'气运昌隆，全部产出 ×1.5',cost:5e5},
+  {id:'g2',name:'灵脉共鸣',desc:'地脉共振，全部产出 ×2',cost:5e7},
+  {id:'g3',name:'天地灵潮',desc:'灵潮涌动，全部产出 ×2.5',cost:1e10},
+];
+const REALMS=['炼气期','筑基期','金丹期','元婴期','化神期','炼虚期','合体期','大乘期','渡劫期'];
+const realmName=lv=>lv<REALMS.length?REALMS[lv]:`真仙 · ${lv-REALMS.length+1}转`;
+const reqFor=lv=>1e7*Math.pow(40,lv);
+
+/* ================= 成就定义 ================= */
+const ACH=[
+  // 点击
+  {id:'a_c1',glyph:'始',name:'初窥门径',desc:'累计点击 100 次',test:()=>S.clicks>=100},
+  {id:'a_c2',glyph:'勤',name:'手不释诀',desc:'累计点击 1,000 次',test:()=>S.clicks>=1000},
+  {id:'a_c3',glyph:'毅',name:'千锤百炼',desc:'累计点击 1 万次',test:()=>S.clicks>=1e4},
+  // 灵气持有
+  {id:'a_q1',glyph:'蓄',name:'小有积蓄',desc:'同时持有 1,000 灵气',test:()=>S.qi>=1000},
+  {id:'a_q2',glyph:'潭',name:'灵气成潭',desc:'同时持有 100 万灵气',test:()=>S.qi>=1e6},
+  {id:'a_q3',glyph:'渊',name:'富甲一方',desc:'同时持有 10 亿灵气',test:()=>S.qi>=1e9},
+  // 历劫总灵气
+  {id:'a_t1',glyph:'问',name:'问道之初',desc:'历劫总灵气达 1 万',test:()=>S.totalAll>=1e4},
+  {id:'a_t2',glyph:'斗',name:'气冲斗牛',desc:'历劫总灵气达 1 亿',test:()=>S.totalAll>=1e8},
+  {id:'a_t3',glyph:'边',name:'法力无边',desc:'历劫总灵气达 1 兆',test:()=>S.totalAll>=1e12},
+  {id:'a_t4',glyph:'古',name:'万古长青',desc:'历劫总灵气达 1 京',test:()=>S.totalAll>=1e16},
+  // 产出
+  {id:'a_p1',glyph:'虹',name:'气若长虹',desc:'吐纳达 100/秒',test:()=>qps()>=100},
+  {id:'a_p2',glyph:'涌',name:'灵气奔涌',desc:'吐纳达 1 万/秒',test:()=>qps()>=1e4},
+  {id:'a_p3',glyph:'海',name:'气海无边',desc:'吐纳达 100 万/秒',test:()=>qps()>=1e6},
+  {id:'a_p4',glyph:'鸣',name:'天地共鸣',desc:'吐纳达 1 亿/秒',test:()=>qps()>=1e8},
+  // 洞府
+  {id:'a_b1',glyph:'府',name:'初辟洞天',desc:'拥有第 1 座洞府',test:()=>BUILDINGS.some(b=>cnt(b.id)>=1)},
+  {id:'a_b2',glyph:'十',name:'气象初成',desc:'洞府总数达 10 座',test:()=>BUILDINGS.reduce((s,b)=>s+cnt(b.id),0)>=10},
+  {id:'a_b3',glyph:'百',name:'百座洞天',desc:'洞府总数达 100 座',test:()=>BUILDINGS.reduce((s,b)=>s+cnt(b.id),0)>=100},
+  {id:'a_b4',glyph:'千',name:'千万产业',desc:'洞府总数达 500 座',test:()=>BUILDINGS.reduce((s,b)=>s+cnt(b.id),0)>=500},
+  {id:'a_b5',glyph:'山',name:'仙山洞主',desc:'拥有仙山福地',test:()=>cnt('shan')>=1},
+  // 法宝
+  {id:'a_u1',glyph:'法',name:'小成之法',desc:'炼成 5 件法宝',test:()=>Object.keys(S.ups).length>=5},
+  {id:'a_u2',glyph:'玄',name:'大成之法',desc:'炼成 15 件法宝',test:()=>Object.keys(S.ups).length>=15},
+  {id:'a_u3',glyph:'圆',name:'诸法圆满',desc:'炼成 30 件法宝',test:()=>Object.keys(S.ups).length>=30},
+  // 境界
+  {id:'a_r1',glyph:'筑',name:'筑基成功',desc:'突破至筑基期',test:()=>S.realm>=1},
+  {id:'a_r2',glyph:'丹',name:'金丹大道',desc:'突破至金丹期',test:()=>S.realm>=2},
+  {id:'a_r3',glyph:'婴',name:'元婴出窍',desc:'突破至元婴期',test:()=>S.realm>=3},
+  {id:'a_r4',glyph:'仙',name:'渡劫飞升',desc:'抵达真仙之境',test:()=>S.realm>=9},
+  // 仙缘
+  {id:'a_s1',glyph:'缘',name:'仙缘有约',desc:'点中 1 次仙缘',test:()=>S.spirits>=1},
+  {id:'a_s2',glyph:'福',name:'福缘深厚',desc:'点中 10 次仙缘',test:()=>S.spirits>=10},
+  // 其他
+  {id:'a_o1',glyph:'世',name:'十世修行',desc:'累计突破 10 次',test:()=>S.brkTotal>=10},
+  {id:'a_o2',glyph:'时',name:'惜时如金',desc:'累计修炼 1 小时',test:()=>S.playTime>=3600},
+];
+const achCount=()=>Object.keys(S.ach).length;
+
+/* ================= 状态 ================= */
+let S={qi:0,totalAll:0,totalRun:0,clicks:0,counts:{},ups:{},realm:0,playTime:0,last:Date.now(),ach:{},spirits:0,brkTotal:0};
+let buyMode=1, buff=null, nextSpirit=0;
+
+/* ================= 设置（独立于游戏存档，兵解不丢失） ================= */
+const SET_KEY='lingxu_settings_v1';
+let SET={sound:true,fx:true,vol:1};
+try{const s=JSON.parse(localStorage.getItem(SET_KEY));if(s&&typeof s==='object')SET={...SET,...s};}catch(e){}
+let soundOn=SET.sound!==false;
+let fxOn=SET.fx!==false;
+let masterVol=(typeof SET.vol==='number'?Math.min(Math.max(SET.vol,0),1):1);
+function saveSet(){try{localStorage.setItem(SET_KEY,JSON.stringify(SET));}catch(e){}}
+const cnt=id=>S.counts[id]||0;
+const has=id=>!!S.ups[id];
+
+/* ================= 数值 ================= */
+function buildingMult(id){
+  let m=1;
+  TIERS.forEach((_,i)=>{ if(has(id+'_u'+i)) m*=2; });
+  if(has('g1'))m*=1.5; if(has('g2'))m*=2; if(has('g3'))m*=2.5;
+  m*=1+0.01*achCount();
+  if(buff)m*=buff.mult;
+  m*=Math.pow(2,S.realm);
+  return m;
+}
+function qps(){
+  let sum=0;
+  BUILDINGS.forEach(b=>sum+=cnt(b.id)*b.prod*buildingMult(b.id));
+  return sum;
+}
+function clickPower(){
+  let base=1;
+  CLICK_UPS.forEach(u=>{ if(has(u.id)&&u.desc.includes('×2'))base*=2; if(has(u.id)&&u.desc.includes('×3'))base*=3; });
+  let pct=0;
+  if(has('c3'))pct+=0.01; if(has('c5'))pct+=0.02; if(has('c7'))pct+=0.05;
+  return base+qps()*pct;
+}
+function costOf(b,n){
+  const owned=cnt(b.id);
+  return b.cost*Math.pow(1.15,owned)*(Math.pow(1.15,n)-1)/0.15;
+}
+function maxAffordable(b){
+  const owned=cnt(b.id);
+  const n=Math.floor(Math.log(1+S.qi*0.15/(b.cost*Math.pow(1.15,owned)))/Math.log(1.15));
+  return Math.max(n,0);
+}
+
+/* ================= 格式化 ================= */
+const UNITS=[[1e44,'载'],[1e40,'正'],[1e36,'涧'],[1e32,'沟'],[1e28,'穰'],[1e24,'秭'],[1e20,'垓'],[1e16,'京'],[1e12,'兆'],[1e8,'亿'],[1e4,'万']];
+function fmt(n){
+  if(!isFinite(n))return'∞';
+  if(n<0)return'-'+fmt(-n);
+  if(n<1e4){ if(n>=100||Number.isInteger(n))return String(Math.floor(n)); return n<10?n.toFixed(1):n.toFixed(0); }
+  for(const[v,u]of UNITS){ if(n>=v){const q=n/v;return(q>=100?Math.floor(q).toString():q.toFixed(2).replace(/\.?0+$/,''))+u;} }
+  return n.toExponential(2);
+}
+function fmtRate(n){ if(n<1e4)return n<100?n.toFixed(1):fmt(n); return fmt(n); }
+
+/* ================= 音效 ================= */
+let AC=null;
+function beep(freq,dur,type,vol,delay){
+  if(!soundOn)return;
+  try{
+    AC=AC||new(window.AudioContext||window.webkitAudioContext)();
+    const t=AC.currentTime+(delay||0);
+    const o=AC.createOscillator(),g=AC.createGain();
+    o.type=type||'sine';o.frequency.value=freq;
+    g.gain.setValueAtTime((vol||.05)*masterVol,t);
+    g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+dur);
+  }catch(e){}
+}
+const sndClick=()=>beep(480+Math.random()*160,.09,'sine',.045);
+const sndBuy=()=>{beep(520,.1,'triangle',.05);beep(780,.12,'triangle',.05,.06);};
+const sndUp=()=>{beep(660,.1,'triangle',.06);beep(880,.1,'triangle',.06,.08);beep(1100,.16,'triangle',.06,.16);};
+const sndBrk=()=>{[440,554,659,880,1108].forEach((f,i)=>beep(f,.5,'sine',.07,i*.12));};
+const sndSpirit=()=>{beep(1200,.3,'sine',.05);beep(1600,.4,'sine',.05,.1);};
+
+/* ================= Toast ================= */
+function toast(title,body,jade){
+  const box=document.getElementById('toasts');
+  const el=document.createElement('div');
+  el.className='toast'+(jade?' jade':'');
+  el.innerHTML=`<h4>${title}</h4>${body?`<p>${body}</p>`:''}`;
+  box.appendChild(el);
+  setTimeout(()=>el.remove(),4000);
+}
+
+/* ================= 点击特效 ================= */
+function fx(x,y,text){
+  if(!fxOn)return;
+  const f=document.createElement('div');
+  f.className='float-num';f.textContent=text;
+  f.style.left=x+'px';f.style.top=y+'px';
+  f.style.fontSize=(16+Math.random()*8)+'px';
+  document.body.appendChild(f);
+  setTimeout(()=>f.remove(),1200);
+  for(let i=0;i<5;i++){
+    const s=document.createElement('div');
+    s.className='spark';
+    const a=Math.random()*Math.PI*2,d=30+Math.random()*55;
+    s.style.left=x+'px';s.style.top=y+'px';
+    s.style.setProperty('--dx',Math.cos(a)*d+'px');
+    s.style.setProperty('--dy',Math.sin(a)*d+'px');
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),750);
+  }
+}
+
+/* ================= 核心：点击 / 购买 ================= */
+function doClick(ev){
+  const p=clickPower();
+  S.qi+=p;S.totalAll+=p;S.totalRun+=p;S.clicks++;
+  sndClick();
+  const orb=document.getElementById('orb').getBoundingClientRect();
+  fx(ev?ev.clientX:orb.left+orb.width/2, ev?ev.clientY:orb.top+orb.height/2,'+'+fmt(p));
+}
+function buy(b){
+  let n=buyMode==='max'?maxAffordable(b):buyMode;
+  if(n<1)return;
+  const c=costOf(b,n);
+  if(S.qi<c){ if(buyMode!=='max'){ n=maxAffordable(b); if(n<1)return; const c2=costOf(b,n); S.qi-=c2; addCount(b,n); } }
+  else{ S.qi-=c; addCount(b,n); }
+  sndBuy();
+  const row=document.querySelector(`.b-row[data-id="${b.id}"]`);
+  if(row){row.classList.remove('flash');void row.offsetWidth;row.classList.add('flash');}
+  renderUps();refreshList();
+  function addCount(bb,k){S.counts[bb.id]=(S.counts[bb.id]||0)+k;}
+}
+function buyUp(u){
+  if(has(u.id)||S.qi<u.cost)return;
+  S.qi-=u.cost;S.ups[u.id]=1;
+  sndUp();toast('法宝炼成',u.name+' · '+u.desc,true);
+  renderUps();refreshList();
+}
+
+/* ================= 突破 ================= */
+function doBreak(){
+  const req=reqFor(S.realm);
+  if(S.totalRun<req)return;
+  S.realm++;
+  S.brkTotal++;
+  S.qi=0;S.totalRun=0;S.counts={};S.ups={};buff=null;
+  sndBrk();
+  toast('突破成功！','你已踏入【'+realmName(S.realm)+'】，全灵气产出 ×'+Math.pow(2,S.realm),false);
+  renderBrk();refreshList();renderUps();updateStatic();
+  save();
+}
+
+/* ================= 渲染 ================= */
+function refreshList(){
+  // 洞府
+  const body=document.getElementById('tab-build');
+  BUILDINGS.forEach(b=>{
+    const owned=cnt(b.id);
+    let n=buyMode==='max'?Math.max(maxAffordable(b),1):buyMode;
+    const c=costOf(b,n);
+    const can=S.qi>=c;
+    const row=body.querySelector(`[data-id="${b.id}"]`);
+    row.classList.toggle('locked',!can);
+    row.querySelector('.b-owned').textContent=owned?('×'+fmt(owned)):'';
+    row.querySelector('.b-cost .c-num').textContent=fmt(c)+(n>1?'（×'+n+'）':'');
+    const each=b.prod*buildingMult(b.id);
+    row.querySelector('.b-meta').textContent=`每座 ${fmtRate(each)}/秒`+(owned?` · 合计 ${fmtRate(each*owned)}/秒`:'');
+  });
+  document.getElementById('buyModes').style.visibility='visible';
+}
+function renderBuildings(){
+  const body=document.getElementById('tab-build');
+  body.innerHTML='';
+  BUILDINGS.forEach(b=>{
+    const row=document.createElement('div');
+    row.className='b-row locked';row.dataset.id=b.id;
+    row.innerHTML=`
+      <div class="b-glyph">${b.glyph}</div>
+      <div class="b-info">
+        <div class="b-name">${b.name} <span class="owned b-owned"></span></div>
+        <div class="b-desc">${b.desc}</div>
+        <div class="b-meta"></div>
+      </div>
+      <div class="b-cost"><span class="c-num"></span><span class="c-unit">灵气</span></div>`;
+    row.addEventListener('click',()=>buy(b));
+    body.appendChild(row);
+  });
+}
+function renderUps(){
+  const body=document.getElementById('tab-ups');
+  if(!body.dataset.built){
+    body.dataset.built='1';
+    body.innerHTML='<div class="u-grid" id="upGrid"></div>';
+  }
+  const grid=document.getElementById('upGrid');
+  const all=[...CLICK_UPS,...GLOBAL_UPS,...UPS];
+  const visible=all.filter(u=>{
+    if(has(u.id))return true;
+    if(u.kind==='b')return cnt(u.target)>=Math.ceil(u.req/2);
+    return S.totalRun>=u.cost/5||S.totalAll>=u.cost/5;
+  });
+  // 仅当可见集合变化时重建 DOM，避免高频重建吞掉点击
+  const sig=visible.map(u=>u.id).join(',');
+  if(grid.dataset.sig!==sig){
+    grid.dataset.sig=sig;
+    grid.innerHTML='';
+    visible.forEach(u=>{
+      const bought=has(u.id);
+      const card=document.createElement('div');
+      card.className='u-card';card.dataset.uid=u.id;
+      card.innerHTML=`
+        <span class="u-tag">${u.kind==='b'?'洞府':(CLICK_UPS.includes(u)?'吐纳':'气运')}</span>
+        <div class="u-name">${u.name}</div>
+        <div class="u-desc">${u.desc}</div>
+        <div class="u-cost"></div>`;
+      if(!bought)card.addEventListener('click',()=>buyUp(u));
+      grid.appendChild(card);
+    });
+    if(!visible.length)grid.innerHTML='<div style="padding:40px;text-align:center;color:var(--text-dim);letter-spacing:2px;font-size:13px">尚未寻得法宝线索 · 先积攒一些灵气吧</div>';
+  }
+  visible.forEach(u=>{
+    const card=grid.querySelector(`[data-uid="${u.id}"]`);
+    if(!card)return;
+    const bought=has(u.id);
+    const can=!bought&&S.qi>=u.cost;
+    card.className='u-card '+(bought?'bought':(can?'':'locked'));
+    card.querySelector('.u-cost').textContent=bought?'已 炼 成':fmt(u.cost)+' 灵气';
+  });
+}
+function renderBrk(){
+  const body=document.getElementById('tab-brk');
+  const req=reqFor(S.realm),prog=Math.min(S.totalRun/req,1);
+  const next=realmName(S.realm+1);
+  body.innerHTML=`
+    <div class="brk-box">
+      <div class="realm-curt">${realmName(S.realm)}</div>
+      <div class="realm-next">下一境 · ${next}</div>
+      <div class="brk-bar"><div class="brk-fill" style="width:${(prog*100).toFixed(1)}%"></div></div>
+      <div class="brk-req">需在今生积攒 ${fmt(req)} 灵气（当前 ${fmt(S.totalRun)}）</div>
+      <button class="brk-btn" id="brkBtn" ${S.totalRun>=req?'':'disabled'}>突 破</button>
+      <div class="brk-stats">
+        <div class="bs-item"><div class="v" id="bsNow">×1</div><div class="k">当前境界加成</div></div>
+        <div class="bs-item"><div class="v" id="bsNext">×2</div><div class="k">突破后加成</div></div>
+        <div class="bs-item"><div class="v" id="bsTotal">0</div><div class="k">历劫总灵气</div></div>
+        <div class="bs-item"><div class="v" id="bsClicks">0</div><div class="k">累计点击</div></div>
+        <div class="bs-item"><div class="v" id="bsTime">0分</div><div class="k">修炼时长</div></div>
+      </div>
+      <div class="danger-zone"><button class="ghost" id="wipeBtn">兵解重修（清除全部存档）</button></div>
+    </div>`;
+  document.getElementById('brkBtn').addEventListener('click',doBreak);
+  const w=document.getElementById('wipeBtn');
+  let armed=false;
+  w.addEventListener('click',()=>{
+    if(!armed){armed=true;w.textContent='再点一次确认：道基尽毁，重来一世？';return;}
+    doWipe();
+  });
+}
+function updateStatic(){
+  document.getElementById('realmChip').textContent='境界 · '+realmName(S.realm);
+}
+
+/* ================= 成就 ================= */
+function checkAch(silent){
+  let unlocked=false;
+  ACH.forEach(a=>{
+    if(!S.ach[a.id]&&a.test()){
+      S.ach[a.id]=1;unlocked=true;
+      if(!silent){
+        toast('成就达成 · '+a.name,a.desc+'　全局气运 +1%',true);
+        sndUp();
+      }
+    }
+  });
+  if(unlocked)renderAch();
+}
+function renderAch(){
+  const body=document.getElementById('tab-ach');
+  if(!body.dataset.built){
+    body.dataset.built='1';
+    body.innerHTML='<div class="ach-summary" id="achSummary"></div><div class="a-grid" id="achGrid"></div>';
+  }
+  const grid=document.getElementById('achGrid');
+  const sig=ACH.map(a=>S.ach[a.id]?1:0).join('');
+  if(grid.dataset.sig!==sig){
+    grid.dataset.sig=sig;
+    grid.innerHTML='';
+    ACH.forEach(a=>{
+      const done=!!S.ach[a.id];
+      const el=document.createElement('div');
+      el.className='a-card '+(done?'done':'locked');
+      el.innerHTML=`<div class="b-glyph">${a.glyph}</div><div class="a-txt"><div class="a-name">${a.name}</div><div class="a-desc">${a.desc}</div></div>`;
+      grid.appendChild(el);
+    });
+  }
+  document.getElementById('achSummary').innerHTML=
+    `已得 <b style="color:var(--jade)">${achCount()}</b> / ${ACH.length} 件成就 · 每件成就为全局产出提供 <b style="color:var(--gold-bright)">+1%</b> 气运`;
+  const bonus=document.getElementById('achBonusNum');
+  if(bonus)bonus.textContent='+'+achCount()+'%';
+}
+
+/* ================= 仙缘事件 ================= */
+function spawnSpirit(){
+  const el=document.createElement('div');
+  el.className='spirit';
+  el.style.setProperty('--sy',(80+Math.random()*(innerHeight-220))+'px');
+  el.style.setProperty('--sdy',((Math.random()*240-120)|0)+'px');
+  document.body.appendChild(el);
+  sndSpirit();
+  const remove=()=>el.remove();
+  el.addEventListener('click',e=>{
+    e.stopPropagation();
+    S.spirits++;
+    if(Math.random()<0.5){
+      buff={mult:5,t:60};
+      toast('仙缘 · 悟道','灵台清明！60 秒内全部产出 ×5',true);
+    }else{
+      const gain=Math.max(13,Math.min(S.qi*0.15,qps()*1500))+qps()*10;
+      S.qi+=gain;S.totalAll+=gain;S.totalRun+=gain;
+      fx(e.clientX,e.clientY,'+'+fmt(gain));
+      toast('仙缘 · 灵气暴增','得一缕先天灵机，+'+fmt(gain)+' 灵气',true);
+    }
+    remove();
+  });
+  setTimeout(remove,13200);
+}
+
+/* ================= 存档 ================= */
+const SAVE_KEY='lingxu_save_v2'; // v2：与旧版标签页隔离，避免其旧状态回写覆盖进度
+let wipePending=false; // 清档后跳过所有保存，防止 beforeunload 把旧档写回
+let lastSavedStr='';
+function save(){
+  if(wipePending)return;
+  S.last=Date.now();
+  lastSavedStr=JSON.stringify(S);
+  try{
+    const curRaw=localStorage.getItem(SAVE_KEY);
+    if(curRaw){
+      try{
+        const cur=JSON.parse(curRaw);
+        if((cur.totalAll||0)>(S.totalAll||0)){
+          // 别的标签页已写出更领先的进度：采纳它，绝不回写落后状态
+          S={...S,...cur};
+          lastSavedStr=JSON.stringify(S);
+          refreshList();renderUps();renderAch();renderBrk();updateStatic();
+          return;
+        }
+      }catch(e){}
+    }
+    localStorage.setItem(SAVE_KEY,lastSavedStr);
+  }catch(e){}
+}
+function load(){
+  try{
+    let raw=localStorage.getItem(SAVE_KEY);
+    if(!raw){
+      raw=localStorage.getItem('lingxu_save_v1'); // 一次性迁移旧存档
+      if(raw)localStorage.removeItem('lingxu_save_v1');
+    }
+    if(!raw)return false;
+    const d=JSON.parse(raw);
+    S={...S,...d};
+    lastSavedStr=JSON.stringify(S);
+    // 离线收益
+    const gap=(Date.now()-(d.last||Date.now()))/1000;
+    if(gap>60){
+      const rate=qps();
+      if(rate>0){
+        const gain=rate*Math.min(gap,8*3600)*0.5;
+        S.qi+=gain;S.totalAll+=gain;S.totalRun+=gain;
+        setTimeout(()=>toast('闭关归来','离关 '+Math.floor(gap/60)+' 分钟，静修获得 '+fmt(gain)+' 灵气',true),600);
+      }
+    }
+    return true;
+  }catch(e){return false;}
+}
+
+/* ================= 主循环 ================= */
+let lastTick=Date.now();
+setInterval(()=>{
+  const now=Date.now(),dt=Math.min((now-lastTick)/1000,2);
+  lastTick=now;
+  S.playTime+=dt;
+  const rate=qps();
+  S.qi+=rate*dt;S.totalAll+=rate*dt;S.totalRun+=rate*dt;
+  if(buff){buff.t-=dt;if(buff.t<=0){buff=null;toast('灵潮退去','天地灵气归于平静');}}
+  if(now>nextSpirit){nextSpirit=now+(45+Math.random()*105)*1000;spawnSpirit();}
+  S.last=now;
+},100);
+
+setInterval(()=>{refreshList();renderUps();renderAch();renderBrkIfVisible();updateStatic();},250);
+setInterval(()=>checkAch(false),1000);
+function renderBrkIfVisible(){
+  const t=document.getElementById('tab-brk');
+  if(t.style.display==='none')return;
+  const btn=document.getElementById('brkBtn');
+  const fill=document.querySelector('.brk-fill');
+  if(!fill)return;
+  const req=reqFor(S.realm),prog=Math.min(S.totalRun/req,1);
+  fill.style.width=(prog*100).toFixed(1)+'%';
+  if(btn)btn.disabled=S.totalRun<req;
+  document.querySelector('.brk-req').textContent=`需在今生积攒 ${fmt(req)} 灵气（当前 ${fmt(S.totalRun)}）`;
+  const curt=document.querySelector('.realm-curt');
+  if(curt)curt.textContent=realmName(S.realm);
+  const rn=document.querySelector('.realm-next');
+  if(rn)rn.textContent='下一境 · '+realmName(S.realm+1);
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  set('bsNow','×'+fmt(Math.pow(2,S.realm)));
+  set('bsNext','×'+fmt(Math.pow(2,S.realm+1)));
+  set('bsTotal',fmt(S.totalAll));
+  set('bsClicks',fmt(S.clicks));
+  set('bsTime',Math.floor(S.playTime/60)+'分');
+}
+
+/* 显示层 rAF */
+const qiNum=document.getElementById('qiNum'),qpsNum=document.getElementById('qpsNum'),
+      clickNum=document.getElementById('clickNum'),totalNum=document.getElementById('totalNum'),
+      realmMultNum=document.getElementById('realmMultNum'),ring=document.getElementById('brkRing'),
+      brkLabel=document.getElementById('brkLabel'),buffChip=document.getElementById('buffChip');
+const CIRC=2*Math.PI*146;
+function raf(){
+  qiNum.textContent=fmt(S.qi);
+  const r=qps();
+  qpsNum.textContent=fmtRate(r)+'/秒';
+  clickNum.textContent='+'+fmt(clickPower());
+  totalNum.textContent=fmt(S.totalAll);
+  realmMultNum.textContent='×'+fmt(Math.pow(2,S.realm));
+  const prog=Math.min(S.totalRun/reqFor(S.realm),1);
+  ring.style.strokeDashoffset=CIRC*(1-prog);
+  brkLabel.textContent=prog>=1?'可突破 · '+realmName(S.realm+1):realmName(S.realm+1)+' · '+Math.floor(prog*100)+'%';
+  if(buff){buffChip.style.display='';buffChip.textContent='灵潮 ×5 · '+Math.ceil(buff.t)+'s';}
+  else buffChip.style.display='none';
+  requestAnimationFrame(raf);
+}
+
+/* ================= 事件绑定 ================= */
+document.getElementById('orb').addEventListener('click',doClick);
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    ['build','ups','ach','brk'].forEach(k=>{
+      document.getElementById('tab-'+k).style.display=t.dataset.tab===k?'':'none';
+    });
+    document.getElementById('buyModes').style.visibility=t.dataset.tab==='build'?'visible':'hidden';
+  });
+});
+document.getElementById('buyModes').querySelectorAll('button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('#buyModes button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    buyMode=b.dataset.m==='max'?'max':parseInt(b.dataset.m,10);
+    refreshList();
+  });
+});
+window.addEventListener('beforeunload',save);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)save();});
+setInterval(save,15000);
+
+/* ================= 主菜单 & 设置逻辑 ================= */
+const menuEl=document.getElementById('menu'),setEl=document.getElementById('settings');
+let settingsFrom='menu';
+function toggleFullscreen(){
+  // EXE 壳内通过宿主消息切换；浏览器内走标准 Fullscreen API
+  if(window.chrome&&window.chrome.webview&&window.chrome.webview.postMessage){
+    window.chrome.webview.postMessage('fs:toggle');return;
+  }
+  if(document.fullscreenElement){document.exitFullscreen();}
+  else if(document.documentElement.requestFullscreen){document.documentElement.requestFullscreen();}
+}
+// WebView2 会吞掉 WinForms 层的 F11/ESC，由页面监听后转发宿主（__hostFull 由壳注入同步）
+window.addEventListener('keydown',e=>{
+  if(e.key==='F11'){e.preventDefault();toggleFullscreen();}
+  else if(e.key==='Escape'&&window.__hostFull){toggleFullscreen();}
+});
+function applySoundBtn(){
+  document.getElementById('soundBtn').textContent='音效 · '+(soundOn?'开':'关');
+}
+function syncSetUI(){
+  document.getElementById('swSound').classList.toggle('on',soundOn);
+  document.getElementById('swFx').classList.toggle('on',fxOn);
+  document.getElementById('volRange').value=Math.round(masterVol*100);
+  document.getElementById('volNum').textContent=Math.round(masterVol*100)+'%';
+}
+function showSettings(from){
+  settingsFrom=from||'game';
+  syncSetUI();
+  setEl.style.display='';
+}
+function setSound(v){
+  soundOn=!!v;SET.sound=soundOn;saveSet();applySoundBtn();
+  document.getElementById('swSound').classList.toggle('on',soundOn);
+}
+function setFx(v){
+  fxOn=!!v;SET.fx=fxOn;saveSet();
+  document.getElementById('swFx').classList.toggle('on',fxOn);
+}
+document.getElementById('soundBtn').addEventListener('click',()=>{setSound(!soundOn);if(soundOn)sndUp();});
+document.getElementById('settingsBtn').addEventListener('click',()=>showSettings('game'));
+document.getElementById('swSound').addEventListener('click',()=>{setSound(!soundOn);if(soundOn)sndUp();});
+document.getElementById('swFx').addEventListener('click',()=>setFx(!fxOn));
+document.getElementById('volRange').addEventListener('input',e=>{
+  masterVol=e.target.value/100;SET.vol=masterVol;saveSet();
+  document.getElementById('volNum').textContent=e.target.value+'%';
+});
+document.getElementById('setFs').addEventListener('click',toggleFullscreen);
+document.getElementById('setBack').addEventListener('click',()=>{setEl.style.display='none';});
+document.getElementById('setMenu').addEventListener('click',()=>{
+  save();setEl.style.display='none';refreshMenu();menuEl.style.display='';
+});
+document.getElementById('mSettings').addEventListener('click',()=>showSettings('menu'));
+document.getElementById('mStart').addEventListener('click',()=>{
+  menuEl.style.display='none';
+  if(!hadSave)setTimeout(()=>toast('踏入灵墟','点击丹田「炁」聚气修行，攒够灵气后开辟洞府，终有一日问鼎长生。',false),400);
+});
+document.getElementById('mContinue').addEventListener('click',()=>{menuEl.style.display='none';});
+document.getElementById('mNew').addEventListener('click',function(){
+  if(this.dataset.armed!=='1'){
+    this.dataset.armed='1';this.textContent='再点一次：道基尽毁，重来一世';
+    return;
+  }
+  doWipe();
+});
+function doWipe(){
+  wipePending=true;
+  localStorage.removeItem(SAVE_KEY);
+  location.reload();
+}
+function refreshMenu(){
+  const has=!!localStorage.getItem(SAVE_KEY);
+  document.getElementById('mContinue').style.display=has?'':'none';
+  const n=document.getElementById('mNew');
+  n.style.display=has?'':'none';
+  n.dataset.armed='';n.textContent='重新开始';
+  document.getElementById('mStart').style.display=has?'none':'';
+}
+// 多标签页保护：别处写入了更领先的存档（历劫总灵气更高）时，本页重载采用最新进度；
+// 落后的写入（如被遗忘的旧标签页）则被忽略，绝不会用它覆盖当前进度。清档（newValue=null）会同步到所有标签页。
+window.addEventListener('storage',e=>{
+  if(e.key!==SAVE_KEY)return;
+  if(e.newValue===null){wipePending=true;location.reload();return;}
+  if(!lastSavedStr)return;
+  try{
+    const inc=JSON.parse(e.newValue), cur=JSON.parse(lastSavedStr);
+    if((inc.totalAll||0)>(cur.totalAll||0))location.reload();
+  }catch(err){}
+});
+setInterval(save,15000);
+
+/* ================= 启动 ================= */
+const hadSave=load();
+checkAch(true); // 静默结算旧进度，避免开局成就提示刷屏
+renderBuildings();renderUps();renderAch();renderBrk();refreshList();updateStatic();
+applySoundBtn();
+requestAnimationFrame(raf);
+if(!hadSave){
+  nextSpirit=Date.now()+90*1000;
+}else{
+  nextSpirit=Date.now()+(30+Math.random()*90)*1000;
+}
+refreshMenu(); // 每次启动都先进入主菜单
+</script>
+</body>
+</html>

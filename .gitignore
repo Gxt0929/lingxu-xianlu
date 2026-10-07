@@ -1,0 +1,28 @@
+# ===== 签名密钥（绝不入库）=====
+android/lingxu.keystore
+*.keystore
+*.jks
+*.idsig
+
+# ===== Android SDK 与构建产物 =====
+android/sdk/
+android/build/
+dist/
+
+# ===== 桌面版运行时与发行包 =====
+pack/dlls/
+pack/sdk/
+pack/webview2.nupkg
+pack/webview2.zip
+*.zip
+
+# ===== 大体积工具二进制 =====
+tools/ffmpeg.exe
+
+# ===== 其他项目文件 =====
+goldrush.html
+taojin.html
+
+# ===== 系统文件 =====
+Thumbs.db
+Desktop.ini
